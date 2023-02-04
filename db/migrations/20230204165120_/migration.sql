@@ -33,9 +33,10 @@ CREATE TABLE "Sell" (
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT,
-    "email" TEXT,
-    "emailVerified" TIMESTAMP(3),
     "surname" TEXT,
+    "email" TEXT,
+    "phone" TEXT,
+    "emailVerified" BOOLEAN,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
