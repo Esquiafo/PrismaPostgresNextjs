@@ -15,17 +15,8 @@ export default async function handler(
   }
 }
 async function createSell(req: NextApiRequest): Promise<Sell> {
-  const { userId, address, price, status, user, sold  } = req.body
   return await prisma.sell.create({
-    data: {
-      userId: userId,
-      address: address,
-      price: price,
-      status: status,
-      sold: sold,
-      user: user,
-      createdAt: new Date()
-    }
+    data: req.body[0]
   })
 }
 async function getSell(req: NextApiRequest): Promise<Array<Sell>> {

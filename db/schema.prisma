@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Product {
-  id           String   @id @default(cuid())
+  id           String   @id @default(cuid()) @unique
   image        String?
   title        String
   description  Json[]
@@ -24,7 +24,7 @@ model Product {
 }
 
 model Sell {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid()) @unique
   userId    String?
   address   String?
   price     Float
@@ -37,7 +37,7 @@ model Sell {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String    @id @default(cuid()) @unique
   name          String?
   surname       String?
   email         String?   @unique

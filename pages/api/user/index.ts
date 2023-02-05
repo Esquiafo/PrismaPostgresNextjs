@@ -15,18 +15,8 @@ export default async function handler(
   }
 }
 async function createUser(req: NextApiRequest): Promise<User> {
-  const { email, phone, name, surname } = req.body
   return await prisma.user.create({
-    data: {
-      name: name,
-      email: email,
-      phone: phone,
-      emailVerified: false,
-      surname: surname,
-      purchases: undefined,
-      createdAt: new Date()
-
-    }
+    data: req.body[0]
   })
 }
 async function getUsers(req: NextApiRequest): Promise<Array<User>> {
