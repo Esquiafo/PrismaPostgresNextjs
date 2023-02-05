@@ -10,10 +10,10 @@
 
 ## API PATHS
 
-- /api/ ***get***
-    - /api/product ***get/post***
-        - /api/product/:id ***get/delete/push***
-    - /api/user    ***get/post***
-        - /api/user/:id    ***get/delete/push***
-    - /api/sell    ***get/post***
-        - /api/sell/:id    ***get/delete/push***
+- ***/api/*** \*get
+    - ***/api/product*** \* get/post
+        - ***/api/product/:id*** \*get/delete/put
+    - ***/api/user***    \* get/post
+        - ***/api/user/:id***    \* get/delete/put
+    - ***/api/sell***    \* get/post
+        - ***/api/sell/:id***    \* get/delete/put
