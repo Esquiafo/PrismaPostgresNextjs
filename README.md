@@ -10,10 +10,14 @@
 
 ## API PATHS
 
-- ***/api/*** \*get
-    - ***/api/product*** \* get/post
-        - ***/api/product/:id*** \*get/delete/put
+- ***/api/***    \*get
+    - ***/api/product***    \* get/post
+        - ***/api/product/:id***    \*get/delete/put
     - ***/api/user***    \* get/post
-        - ***/api/user/:id***    \* get/delete/put
+        - ***/api/user/:id***    \*get/delete/put
     - ***/api/sell***    \* get/post
         - ***/api/sell/:id***    \* get/delete/put
+
+
+## ENV
+DATABASE_URL="postgresql://<USER>:<PASSWORD><LOCALHOST><PORT>/<DB>"
