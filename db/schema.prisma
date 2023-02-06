@@ -9,22 +9,23 @@ datasource db {
 }
 
 model Product {
-  id           String   @id @default(cuid()) @unique
+  id           String     @id @unique @default(cuid())
   image        String?
   title        String
+  brand        Brand[]
+  category     Category[]
   description  Json[]
   cantity      Int?
   price        Float
   authenticity Int?
   returnPolicy Int?
   warranty     Int?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }
 
 model Sell {
-  id        String   @id @default(cuid()) @unique
+  id        String   @id @unique @default(cuid())
   userId    String?
   address   String?
   price     Float
@@ -33,18 +34,34 @@ model Sell {
   user      User?    @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
 
+model Category {
+  id        String    @id @unique @default(cuid())
+  name      String?
+  image     String?
+  items     Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Brand {
+  id        String    @id @unique @default(cuid())
+  name      String?
+  image     String?
+  items     Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model User {
-  id            String    @id @default(cuid()) @unique
+  id            String   @id @unique @default(cuid())
   name          String?
   surname       String?
-  email         String?   @unique
+  email         String?  @unique
   phone         String?
   purchases     Sell[]
   emailVerified Boolean?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
