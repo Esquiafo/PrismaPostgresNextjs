@@ -22,9 +22,9 @@ export default function GroupComponente() {
          return(
              <div key={units.id+units.name}  style={{margin: '0px', width: '125px'}} className="inline-block"> 
              <div >
-             <h4 className=" text-xl text-center whitespace-pre-line font-medium text-gray-900 dark:text-white">
+             <h1 className=" font-mono text-lg text-center whitespace-pre-line font-medium text-gray-900 dark:text-white ">
                   {units.name}
-                 </h4>
+                 </h1>
                <div style={{margin: "0px"}} className="flex justify-center">
                  <img
           
