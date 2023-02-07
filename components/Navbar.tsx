@@ -13,7 +13,7 @@ export default function Navbar() {
     return(
 
 
-      <div>
+      <div className="text-center">
         
     <div>
     <button className={`${rotate} transition duration-700`} onClick={function(){showBar()}} >
