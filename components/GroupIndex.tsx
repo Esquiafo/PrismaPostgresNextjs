@@ -32,10 +32,11 @@ export default function IndexContext() {
       }
 
 let BrandView = brandContent.map(units => {
+  let path = units.name.toLowerCase().replace(" ","-")
    return(
     
        <div key={units.id+units.name}  style={{margin: '0px', width: '125px'}} className="inline-block"> 
-        <Link href={`/brand/${units.name.toLowerCase()}`}>
+        <Link href={`/brand/${path}`}>
        <div >
        <h4 className=" font-mono text-lg text-center whitespace-pre-line font-medium text-gray-900 dark:text-white">
             {units.name}
@@ -61,10 +62,11 @@ let BrandView = brandContent.map(units => {
       }
 
       let CategoryView = categoryContent.map(units => {
+        let path = units.name.toLowerCase().replace(" ","-")
          return(
           
              <div  key={units.id+units.name}  style={{margin: '0px', width: '125px'}} className="inline-block"> 
-               <Link href={`/category/${units.name.toLowerCase()}`}>
+               <Link href={`/category/${path}`}>
              <div >
              <h1 className=" font-mono text-lg text-center whitespace-pre-line font-medium text-gray-900 dark:text-white ">
                   {units.name}

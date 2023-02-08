@@ -18,11 +18,18 @@ export default async function handler(
   }
 }
 async function putCategory(req: NextApiRequest): Promise<Array<Category>> {
+  let valuesFromGet = await getCategory(req)
   const query:string = req.query.id as string;
+  let idQuery
+  for (const key in valuesFromGet[0]) {
+    for (const [key, value] of Object.entries( valuesFromGet )) {
+      idQuery = value.id
+     }
+  }
   if (req.query && req.query.id) {
       await prisma.category.update({
         where: {
-          name: query.toUpperCase()
+          id: idQuery
         },
           data: req.body[0]
 
