@@ -3,7 +3,7 @@ import React,{ useEffect, useState } from "react";
 import Foot from "@/components/Footer";
 import { useRouter } from 'next/router'
 import Link from "next/link";
-import { Card } from "flowbite-react";
+import { Button, Card } from "flowbite-react";
 export default function BrandID() {
     const router = useRouter()
     const [state, setState] = useState({});
@@ -37,19 +37,34 @@ export default function BrandID() {
         if(brandContent.length>0){
           ViewSource =  brandContent.map(items=>{
                 return(
-                    <div className="inline-block  p-8">
-                    <Link key={items.id} href={`/product/${items.id}`}>
-                   <div className="max-w-sm">
-                    <Card imgSrc="https://flowbite.com/docs/images/carousel/carousel-2.svg">
-                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                    <div className=" ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300 border-4 rounded dark:border-sky-900  inline-block filter-none  m-8">
+                   
+                    <div className="max-w-sm ">
+                    <div>
+                    <img className="" src="https://flowbite.com/docs/images/blog/image-1.jpg"/>
+                    <div className="my-5">
+                    <h5 className=" text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                     {items.title}
                     </h5>
-                    <p className="font-normal text-gray-700 dark:text-gray-400">
+                    <p className=" font-normal text-gray-700 dark:text-gray-300">
                     ${items.price}
                     </p>
-                    </Card>
                     </div>
+                    <div className="justify-between flex">
+                    <Link key={items.id} href={`/product/${items.id}`}>
+                    <Button className="ml-5 mb-5">
+                      Detalle
+                    </Button>
                     </Link>
+                    <Link key={items.id} href={`/carrito/${items.id}`}>
+                    <Button color="success" className="mr-5 mb-5">
+                      Comprar
+                    </Button> 
+                    </Link>
+                    </div>
+                    </div>
+                    </div>
+                 
                     </div>
                 )
             }) 

@@ -37,10 +37,10 @@ export default function BrandID() {
         if(brandContent.length>0){
           ViewSource =  brandContent.map(items=>{
                 return(
-                    <div className="inline-block  p-8">
+                    <div className="inline-block">
                       <Link key={items.id} href={`/product/${items.id}`}>
                    <div className="max-w-sm">
-  <Card imgSrc="https://flowbite.com/docs/images/carousel/carousel-2.svg">
+  <Card imgSrc="https://flowbite.com/docs/images/blog/image-1.jpg">
     <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
       {items.title}
     </h5>
@@ -63,7 +63,7 @@ export default function BrandID() {
     <div>
          
 <Navbar></Navbar>
-<div className="text-center">
+<div className="text-center p-8">
 {ViewSource}
 
 </div>   

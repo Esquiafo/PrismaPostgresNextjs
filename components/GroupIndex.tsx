@@ -35,7 +35,7 @@ let BrandView = brandContent.map(units => {
   let path = units.name.toLowerCase().replace(" ","-")
    return(
     
-       <div key={units.id+units.name}  style={{margin: '0px', width: '125px'}} className="inline-block"> 
+       <div key={units.id+units.name}  style={{margin: '0px', width: '125px'}} className="ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300 inline-block"> 
         <Link href={`/brand/${path}`}>
        <div >
        <h4 className=" font-mono text-lg text-center whitespace-pre-line font-medium text-gray-900 dark:text-white">
@@ -65,7 +65,7 @@ let BrandView = brandContent.map(units => {
         let path = units.name.toLowerCase().replace(" ","-")
          return(
           
-             <div  key={units.id+units.name}  style={{margin: '0px', width: '125px'}} className="inline-block"> 
+             <div  key={units.id+units.name}  style={{margin: '0px', width: '125px'}} className="ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300 inline-block"> 
                <Link href={`/category/${path}`}>
              <div >
              <h1 className=" font-mono text-lg text-center whitespace-pre-line font-medium text-gray-900 dark:text-white ">
