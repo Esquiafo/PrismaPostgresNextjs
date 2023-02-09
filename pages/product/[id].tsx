@@ -35,7 +35,7 @@ export default function BrandID() {
                   console.log(typeof productValue[0] == "boolean")
                   console.log()
                   return(
-                 <div>
+                 <div className="flex justify-between">
                   {productKey}
                   {typeof productValue[0] == "boolean" ? (
                     <div>
@@ -73,8 +73,8 @@ export default function BrandID() {
             for (const [key, value] of Object.keys( state )) {
               let objValue = state[key as keyof typeof state]
               ViewProduct = ()=>{
-return(<div key={objValue['id']} className="grid sm:grid-cols-1 md:grid-cols-2 justify-center text-center align-center">
-<div className="flex flex-wrap justify-center  ">
+return(<div key={objValue['id']} className=" justify-center text-center align-center">
+<div className="flex  justify-center  ">
 <div  className="md:w-4/5 w-3/5 lg:w-2/3">
 <Carousel interval={3000} infiniteLoop={true} dynamicHeight={true} autoPlay={true}>
                 <div>
