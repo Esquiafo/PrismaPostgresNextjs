@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 
 import Swiper from 'react-id-swiper';
 
-import { Alert, Badge, Button } from "flowbite-react";
+import { Alert, Badge, Button, Carousel } from "flowbite-react";
 
 export default function BrandID() {
   const params = {
@@ -80,20 +80,41 @@ export default function BrandID() {
               }
             for (const [key, value] of Object.keys( state )) {
               let objValue = state[key as keyof typeof state]
+              console.log(objValue.image)
               ViewProduct = ()=>{
 return(<div key={objValue['id']} className="">
-<div className="">
-<div className="w-4/5 md:w-2/4 lg:w-1/4">
-<Swiper {...params}>
-        <div>Slide #1</div>
-        <div>Slide #2</div>
-        <div>Slide #3</div>
-        <div>Slide #4</div>
-        <div>Slide #5</div>
-      </Swiper>
+<div className="flex flex-wrap justify-center">
+<div className="md:basis-1/2 sm:basis-1 relative">
+<div className="flex justify-center align-center px-5">
+
+<div className=" text-center h-80 w-80 md:w-5/6 sm:w-screen">
+  <Carousel slideInterval={5000}>
+    <img
+      src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
+      alt="..."
+    />
+    <img
+      src="https://flowbite.com/docs/images/carousel/carousel-2.svg"
+      alt="..."
+    />
+    <img
+      src="https://flowbite.com/docs/images/carousel/carousel-3.svg"
+      alt="..."
+    />
+    <img
+      src="https://flowbite.com/docs/images/carousel/carousel-4.svg"
+      alt="..."
+    />
+    <img
+      src="https://flowbite.com/docs/images/carousel/carousel-5.svg"
+      alt="..."
+    />
+  </Carousel>
+</div>
+
 </div>
 </div>
-<div className="inline-block">
+<div className="md:basis-1/2 sm:basis-1">
 <div className="inline-block p-8">
   <div className="inline-block" style={{width: '100%'}}>
     <a href="#">
@@ -119,6 +140,9 @@ return(<div key={objValue['id']} className="">
     </div>
   </div>
 </div>
+</div>
+
+
 </div>
 
 </div>
