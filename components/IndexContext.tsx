@@ -11,7 +11,7 @@ export default function IndexContext() {
 <h1 className="pb-5 pt-5 text-xl text-center font-medium text-gray-900 dark:text-white">Productos recientes</h1>
   <div className="flex justify-center align-center px-5">
 
-<div className=" text-center h-80 w-80 md:w-5/6 sm:w-screen">
+<div className=" text-center h-80 w-80 md:w-5/6 md:h-[25rem] sm:w-screen">
   <Carousel slideInterval={5000}>
     <img
       src="https://flowbite.com/docs/images/carousel/carousel-1.svg"

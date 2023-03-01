@@ -3,10 +3,7 @@ import React,{ useEffect, useState, useRef } from "react";
 import Foot from "@/components/Footer";
 import { useRouter } from 'next/router'
 
-
-import Swiper from 'react-id-swiper';
-
-import { Alert, Badge, Button, Carousel } from "flowbite-react";
+import { Alert, Badge, Button, Carousel, Table } from "flowbite-react";
 
 export default function BrandID() {
   const params = {
@@ -80,14 +77,37 @@ export default function BrandID() {
               }
             for (const [key, value] of Object.keys( state )) {
               let objValue = state[key as keyof typeof state]
-              console.log(objValue.image)
-              ViewProduct = ()=>{
-return(<div key={objValue['id']} className="">
-<div className="flex flex-wrap justify-center">
-<div className="md:basis-1/2 sm:basis-1 relative">
-<div className="flex justify-center align-center px-5">
+              let arrayJson:Array<String> = objValue['description']
+              
+              let jsonView= arrayJson.map(x=>{
+                for (const [key, value] of Object.entries(x)) {
+                console.log()
+                return(
+                  <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {`${key}`.toUpperCase()}
+                  </Table.Cell>
+                  <Table.Cell>
+                  {`${typeof value == 'boolean' ? (value==true ? (
+                     '✔'
+                    
+                  ) : (
+                     'x'
 
-<div className=" text-center h-80 w-80 md:w-5/6 sm:w-screen">
+                  )) : (value)}`.toUpperCase()}
+                  </Table.Cell>
+                </Table.Row>
+                  )}
+                }
+              )
+              ViewProduct = ()=>{
+return(
+<div key={objValue['id']} className="">
+<div className="flex flex-wrap justify-center">
+<div className="md:basis-1/2 my-5 px-5 sm:basis-1 relative">
+<div className="flex justify-center align-center ">
+
+<div className=" text-center h-80 w-80 md:w-5/6 h-min-[80] w-min-[80] sm:w-screen">
   <Carousel slideInterval={5000}>
     <img
       src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
@@ -114,31 +134,26 @@ return(<div key={objValue['id']} className="">
 
 </div>
 </div>
-<div className="md:basis-1/2 sm:basis-1">
-<div className="inline-block p-8">
-  <div className="inline-block" style={{width: '100%'}}>
-    <a href="#">
-      <h1 className="text-4xl font-semibold tracking-tight text-gray-900 dark:text-white">
-        {objValue['title']}
-      </h1>
-    </a>
+<div  className="md:basis-1/2 my-5 px-5 sm:basis-1 w-full">
+<div className="block ">
+<div className=" text-center sm:w-auto ">
+COMPRAR 
+    CANTIDAD
+<Table>
+  <Table.Head>
+    <Table.HeadCell>
+      Descripciones
+    </Table.HeadCell>
+    <Table.HeadCell>
+      Valores
+    </Table.HeadCell>
+  </Table.Head>
+  <Table.Body className="divide-y">
 
-    <div className="flex items-center align-middle justify-between">
-      <span className="text-3xl font-bold text-gray-900 dark:text-white">
-      ${objValue['price']}
-      </span>
-      <a
-        href="#"
-        className="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
-        Add to cart
-      </a>
-    </div>
-    {ProductList}
-    <div>
-   
-    </div>
-  </div>
+    {jsonView}
+  </Table.Body>
+</Table>
+</div>
 </div>
 </div>
 
