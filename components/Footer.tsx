@@ -17,19 +17,19 @@ export default function Foot() {
   <div className="w-full">
     <div className="grid w-full grid-cols-2  gap-8 py-8 px-6 md:grid-cols-4">
       <div style={{marginLeft: '25%'}}>
-        <Footer.Title title="Company"  className=" text-start " />
+        <Footer.Title title="Compañia"  className=" text-start " />
         <Footer.LinkGroup col={true}  className=" text-start ">
           <Footer.Link href="#" >
-            About
+            Inicios
           </Footer.Link>
           <Footer.Link href="#">
-            Careers
+            Carreras
           </Footer.Link>
           <Footer.Link href="#">
-            Brand Center
+            Centro de Marcas
           </Footer.Link>
           <Footer.Link href="#">
-            Blog
+            Blogs
           </Footer.Link>
         </Footer.LinkGroup>
       </div>
@@ -51,16 +51,16 @@ export default function Foot() {
         </Footer.LinkGroup>
       </div>
       <div style={{marginLeft: '25%'}}>
-        <Footer.Title title="Legal"  className=" text-start " />
+        <Footer.Title title="Legales"  className=" text-start " />
         <Footer.LinkGroup col={true}  className=" text-start ">
           <Footer.Link href="#">
-            Privacy Policy
+            Politica de Privacidad
           </Footer.Link>
           <Footer.Link href="#">
-            Licensing
+            Licencias
           </Footer.Link>
           <Footer.Link href="#">
-            Terms & Conditions
+            Terminos y coindiciones
           </Footer.Link>
         </Footer.LinkGroup>
       </div>
