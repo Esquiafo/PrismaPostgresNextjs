@@ -51,12 +51,12 @@ export default function BrandID() {
                     </p>
                     </div>
                     <div className="justify-between flex">
-                    <Link key={items.id} href={`/product/${items.id}`}>
+                    <Link key={`${items.id}product`} href={`/product/${items.id}`}>
                     <Button className="ml-5 mb-5">
                       Detalle
                     </Button>
                     </Link>
-                    <Link key={items.id} href={`/carrito/${items.id}`}>
+                    <Link key={`${items.id}carrito`} href={`/carrito/${items.id}`}>
                     <Button color="success" className="mr-5 mb-5">
                       Comprar
                     </Button> 

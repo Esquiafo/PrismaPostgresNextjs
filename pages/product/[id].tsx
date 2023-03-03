@@ -1,13 +1,14 @@
 import Navbar from "@/components/Navbar";
-import React,{ useEffect, useState, useRef } from "react";
+import React,{ useEffect, useState, useContext } from "react";
 import Foot from "@/components/Footer";
-import { useRouter } from 'next/router'
-
+import { useRouter} from 'next/router'
 import { Button, Carousel, Table } from "flowbite-react";
+import Cart from "../cart";
+import CartContext from "@/components/CartContect";
 
-export default function BrandID() {
+export default function ProductId() {
   const [cantity, setCantity] = useState(1);
-
+  const cartValues = useContext(CartContext)
   const params = {
     pagination: {
       el: '.swiper-pagination',
@@ -15,7 +16,7 @@ export default function BrandID() {
     }
   }
     const router = useRouter()
-    const [state, setState] = useState({});
+    const [state, setState]:any = useState({});
     let productContent:Array<any> = []
     useEffect(() => {
       let path = ''
@@ -47,13 +48,13 @@ export default function BrandID() {
                       
                       {productValue[0] ? (
                         <div>  
-                            <div>
+                      <div>
                         <Button color="success">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                           </svg>
                         </Button>
-  </div>
+                      </div>
                        </div>
                       ) : (
                         <div> 
@@ -78,10 +79,12 @@ export default function BrandID() {
             for (const [key, value] of Object.keys( state )) {
               let objValue = state[key as keyof typeof state]
               let arrayJson:Array<String> = objValue['description']
-              
+              function sendData(){
+                cartValues.addItems(state,cantity)
+              }
               let jsonView= arrayJson.map(x=>{
                 for (const [key, value] of Object.entries(x)) {
-                console.log()
+                
                 return(
                   <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
@@ -149,7 +152,7 @@ return(
       src="https://flowbite.com/docs/images/carousel/carousel-5.svg"
       alt="..."
     />
-  </Carousel>
+  </Carousel>any
 </div>
 
 </div>
@@ -170,7 +173,7 @@ return(
 <button onClick={decrease} type="button" className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">-</button>
 <h3 className="pr-3 pl-1 text-2xl font-bold dark:text-white mb-1 items-center flex justify-center">{cantity}</h3>
 <button onClick={increase} type="button" className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">+</button>
-<button type="button" className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Agregar al carro</button>
+<button onClick={sendData} type="button" className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Agregar al carro</button>
 
 </div>
 </div>
