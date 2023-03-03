@@ -10,11 +10,11 @@ export default function Foot() {
 
   
 <div>
-<div className="text-start">
+<div className="text-start ">
 
 </div>
 <Footer>
-  <div className="w-full">
+  <div className="w-full bg-white border border-gray-200 shadow  dark:bg-gray-800 dark:border-gray-700">
     <div className="grid w-full grid-cols-2  gap-8 py-8 px-6 md:grid-cols-4">
       <div style={{marginLeft: '25%'}}>
         <Footer.Title title="Compañia"  className=" text-start " />
