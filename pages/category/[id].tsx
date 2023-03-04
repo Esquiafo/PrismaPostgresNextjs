@@ -37,7 +37,7 @@ export default function BrandID() {
         if(brandContent.length>0){
           ViewSource =  brandContent.map(items=>{
                 return(
-                    <div className=" ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300 border-4 rounded dark:border-sky-900  inline-block filter-none  m-8">
+                    <div key={items.id} className=" ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300 border-4 rounded dark:border-sky-900  inline-block filter-none  m-8">
                    
                     <div className="max-w-sm ">
                     <div>
