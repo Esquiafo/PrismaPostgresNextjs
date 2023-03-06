@@ -27,7 +27,6 @@ export default function IndexContext() {
      handle()
    }, []);
       for (const [key, value] of Object.entries( dataB )) {
-         console.log(dataB)
          brandContent.push(dataB[key as keyof typeof dataB])
       }
 

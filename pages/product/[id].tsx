@@ -4,7 +4,7 @@ import Foot from "@/components/Footer";
 import { useRouter} from 'next/router'
 import { Button, Carousel, Table } from "flowbite-react";
 import Cart from "../cart";
-import CartContext from "@/components/CartContect";
+import CartContext from "@/components/CartContext";
 
 export default function ProductId() {
   const [cantity, setCantity] = useState(1);

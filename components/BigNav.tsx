@@ -1,6 +1,7 @@
 import { useTheme } from 'next-themes'
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Link from 'next/link';
+import CartContext from './CartContext';
 
 export default function BigNav() {
     const { theme, setTheme } = useTheme();
@@ -16,6 +17,7 @@ export default function BigNav() {
   useEffect(() => {
     inverted()
   });
+  
     return(
      
 
