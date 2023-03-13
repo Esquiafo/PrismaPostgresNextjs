@@ -3,12 +3,45 @@ import React,{ useEffect, useState, useContext } from "react";
 import Foot from "@/components/Footer";
 import { useRouter} from 'next/router'
 import { Button, Carousel, Table } from "flowbite-react";
-import Cart from "../cart";
-import CartContext from "@/components/CartContext";
+import { Cart, CartContextType, CartItem} from "../../interface/Interfaces";
 
 export default function ProductId() {
   const [cantity, setCantity] = useState(1);
-  const cartValues = useContext(CartContext)
+  const [cart, setCart] = useState<Cart>({ items: [], total: 0 });
+      
+  useEffect(() => {
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+  const addItem = (item: CartItem) => {
+    const existingItem = cart.items.find((i) => i.id === item.id);
+
+    if (existingItem) {
+      const updatedItem = {
+        ...existingItem,
+        quantity: existingItem.quantity + 1,
+      };
+      const updatedItems = cart.items.map((i) =>
+        i.id === item.id ? updatedItem : i
+      );
+      const updatedTotal = cart.total + item.price;
+      setCart({ items: updatedItems, total: updatedTotal });
+    } else {
+      const newItems = [...cart.items, { ...item, quantity: 1 }];
+      const newTotal = cart.total + item.price;
+      setCart({ items: newItems, total: newTotal });
+      console.log(cart)
+    }
+  };
+  let emty = {}
+  
+
   const params = {
     pagination: {
       el: '.swiper-pagination',
@@ -39,6 +72,7 @@ export default function ProductId() {
                 ProductList = finalValue.map(x=>{
                   const productKey = Object.getOwnPropertyNames(x)
                   const productValue = Object.values(x)
+
                   return(
                  <div className="flex justify-between">
                   {productKey}
@@ -79,7 +113,7 @@ export default function ProductId() {
               let objValue = state[key as keyof typeof state]
               let arrayJson:Array<String> = objValue['description']
               function sendData(){
-                cartValues.addItems(state,cantity)
+                addItem(objValue)
               }
               let jsonView= arrayJson.map(x=>{
                 for (const [key, value] of Object.entries(x)) {

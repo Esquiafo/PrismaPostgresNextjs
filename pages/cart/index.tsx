@@ -1,12 +1,11 @@
 import React, {use, useContext, useEffect, useState} from 'react';
-import CartContext from '@/components/CartContext';
 import Navbar from '@/components/Navbar';
 import Foot from '@/components/Footer';
 import { Button, TextInput } from 'flowbite-react';
-import ViewCart from '@/components/ViewCart';
+import { CartView } from '@/components/ViewCart';
 export default function Cart() {
 
-
+  
   
   let [name, setName] = useState('')
   let [email, setEmail] = useState('')
@@ -43,7 +42,8 @@ const handlePhone = (event:any) => {
   
 <div>
   <Navbar></Navbar>
-  <ViewCart></ViewCart>
+
+ <CartView></CartView>
  <Foot></Foot>
 
    </div>
