@@ -1,7 +1,6 @@
 import { useTheme } from 'next-themes'
 import React, { useState, useEffect, useContext } from "react";
 import Link from 'next/link';
-import CartContext from './Cart/CartContext';
 
 export default function BigNav() {
     const { theme, setTheme } = useTheme();

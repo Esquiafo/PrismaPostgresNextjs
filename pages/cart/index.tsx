@@ -2,7 +2,7 @@ import React, {use, useContext, useEffect, useState} from 'react';
 import Navbar from '@/components/Navbar';
 import Foot from '@/components/Footer';
 import { Button, TextInput } from 'flowbite-react';
-import { CartView } from '@/components/ViewCart';
+import CartView  from '@/components/ViewCart';
 export default function Cart() {
 
   
