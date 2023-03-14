@@ -2,9 +2,10 @@ export interface CartItem {
     id: number;
     name: string;
     price: number;
-    quantity: number;
     image: string;
     title: string;
+    cantity: number;
+    cantidad: number;
   }
   
   export interface Cart {

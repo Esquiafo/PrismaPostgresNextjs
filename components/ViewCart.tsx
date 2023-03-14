@@ -17,6 +17,7 @@ export default function CartView() {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
+  const [cantidad, setCantidad] = useState(1);
   const deleteItem = (itemId: number) => {
     setCart((prevCart) => {
       const updatedItems = prevCart.items.filter((item) => item.id !== itemId);
@@ -30,46 +31,54 @@ export default function CartView() {
   const deleteAll = ()=>{
     setCart({ items: [], total: 0 })
   }
-  const addItem = (item: CartItem) => {
-    const existingItem = cart.items.find((i) => i.id === item.id);
 
-    if (existingItem) {
-      const updatedItem = {
-        ...existingItem,
-        quantity: existingItem.quantity + 1,
-      };
-      const updatedItems = cart.items.map((i) =>
-        i.id === item.id ? updatedItem : i
-      );
-      const updatedTotal = cart.total + item.price;
-      setCart({ items: updatedItems, total: updatedTotal });
-    } else {
-      const newItems = [...cart.items, { ...item, quantity: 1 }];
-      const newTotal = cart.total + item.price;
-      setCart({ items: newItems, total: newTotal });
-      console.log(cart)
-    }
-  };
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newItem: CartItem = {
-      id: Math.random(),
-      name,
-      price: parseFloat(price),
-      quantity: parseInt(quantity),
-      title: '',
-      image: '',
-    };
-    addItem(newItem);
-    setName('');
-    setPrice('');
-    setQuantity('');
-  };
+ 
 
-
+  function decrease(params:CartItem) {
+    
+    const existingItem = cart.items.map((i) => {
+      if (i.id === params.id) {
+        i.cantidad--
+      }
+    });
+  if(params.cantidad < 1 ){
+    deleteItem(params.id)
+  }else{
+    const newItems= [
+      ...existingItem
+    ]
+ 
+    const updatedTotal = cart.total + params.price;
+    setCart({ items: cart.items, total: updatedTotal });
+  }
+}
   
+
+function increase(params:CartItem) {
+    
+
+if(params.cantidad >= params.cantity ){
+  alert('Superaste el maximo de stock')
+}else{
+  const existingItem = cart.items.map((i) => {
+    if (i.id === params.id) {
+      i.cantidad++
+    }
+  });
+  const newItems= [
+    ...existingItem
+  ]
+
+  const updatedTotal = cart.total + params.price;
+  setCart({ items: cart.items, total: updatedTotal });
+}
+}
+
+
      let products = cart.items.map(product => {
-        console.log(product)
+      console.log(product)
+        console.log(cantidad)
+      
 
           return (
            
@@ -86,11 +95,12 @@ export default function CartView() {
           <div className="flex flex-col justify-between p-4 leading-normal">
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{product.title}</h5>
               <div className='flex text-center justify-center'>
-              <Button value={'1'} style={{width: '35px'}} >-</Button>
-                     {product.quantity}
-              <Button value={'2'} style={{width: '35px'}} >+</Button>
+              <Button onClick={()=>{decrease(product)}} style={{width: '35px'}} >-</Button>
+                     {product.cantidad}
+              <Button onClick={()=>{increase(product)}}  style={{width: '35px'}} >+</Button>
               </div>
-              <p>${product.price}</p>
+              <p>Unitario: ${product.price}</p>
+              <p>Total: ${product.price*product.cantidad}</p>
                </div>
           </div>
            

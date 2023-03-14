@@ -19,13 +19,13 @@ export default function ProductId() {
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
-  const addItem = (item: CartItem) => {
+  const addItem = (item: CartItem) => { 
     const existingItem = cart.items.find((i) => i.id === item.id);
 
     if (existingItem) {
       const updatedItem = {
         ...existingItem,
-        quantity: existingItem.quantity + 1,
+
       };
       const updatedItems = cart.items.map((i) =>
         i.id === item.id ? updatedItem : i
@@ -36,11 +36,8 @@ export default function ProductId() {
       const newItems = [...cart.items, { ...item, quantity: 1 }];
       const newTotal = cart.total + item.price;
       setCart({ items: newItems, total: newTotal });
-      console.log(cart)
     }
   };
-  let emty = {}
-  
 
   const params = {
     pagination: {
@@ -112,6 +109,7 @@ export default function ProductId() {
             for (const [key, value] of Object.keys( state )) {
               let objValue = state[key as keyof typeof state]
               let arrayJson:Array<String> = objValue['description']
+              objValue['cantidad']=cantity
               function sendData(){
                 addItem(objValue)
               }
