@@ -1,4 +1,5 @@
 import { Button } from 'flowbite-react';
+
 import React, { useContext, useEffect, useState } from 'react';
 import { Cart, CartContextType, CartItem} from "../interface/Interfaces";
 export default function CartView() {
@@ -65,14 +66,114 @@ if(params.cantidad >= params.cantity ){
       i.cantidad++
     }
   });
-  const newItems= [
-    ...existingItem
-  ]
 
   const updatedTotal = cart.total + params.price;
   setCart({ items: cart.items, total: updatedTotal });
 }
 }
+/* 
+let validEmail = .test(email)
+let validName = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/.test(nombre)
+let validPhone = /\b(?:\d[ ]*?){6,}\b/.test(phone)
+let validEmailEmail = email == validemail */
+
+const validateEmail = (email: string) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+const validateName = (name: string) => {
+  const nameRegex = /^[a-zA-Z\s]*$/;
+  return nameRegex.test(name);
+};
+
+const validateTelephone = (telephone: string) => {
+  const telephoneRegex =/^(\+?\d{8,14})$/
+  return telephoneRegex.test(telephone);
+};
+
+const EmailValidationForm = () => {
+  const [email, setEmail] = useState('');
+  const [isValidEmail, setIsValidEmail] = useState(false);
+  const [name, setName] = useState('');
+  const [isValidName, setIsValidName] = useState(false);
+  const [telephone, setTelephone] = useState('');
+  const [isValidTelephone, setIsValidTelephone] = useState(false);
+  const [reEmail, setReEmail] = useState('')
+  const [isReValidEmail, setRevalidEmail] = useState(false)
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const enteredEmail = event.target.value;
+    setEmail(enteredEmail);
+    setIsValidEmail(validateEmail(enteredEmail));
+  };
+  const handleReEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const enteredEmail = event.target.value;
+    setEmail(email);
+    setReEmail(enteredEmail);
+    email === enteredEmail ? setRevalidEmail(true) : setRevalidEmail(false);
+  };
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const enteredName = event.target.value;
+    setName(enteredName);
+    setIsValidName(validateName(enteredName));
+  };
+
+  const handleTelephoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const enteredTelephone = event.target.value;
+    setTelephone(enteredTelephone);
+    setIsValidTelephone(validateTelephone(enteredTelephone));
+  };
+
+  return (
+
+    <form>
+
+
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="email">Email:</label>
+
+      <input
+        type="email"
+        id="email"
+        name="email"
+        value={email}
+        onChange={handleEmailChange}
+        className={`${isValidEmail ? 'bg-green-100' : 'bg-red-100'} border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+      />
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="email">Reingresa Email:</label>
+
+      <input
+        type="email"
+        id="email"
+        name="email"
+        value={reEmail}
+        onChange={handleReEmailChange}
+        className={`${isReValidEmail ? 'bg-green-100' : 'bg-red-100'} border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+      />
+
+      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="name">Nombre y Apellido:</label>
+
+      <input
+        type="text"
+        id="name"
+        name="name"
+        value={name}
+        onChange={handleNameChange}
+        className={`${isValidName ? 'bg-green-100' : 'bg-red-100'} border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}        />
+      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="email">Celular:</label>
+      <input
+        type="text"
+        id="telephone"
+        name="telephone"
+        value={telephone}
+        onChange={handleTelephoneChange}
+        className={`${isValidTelephone ? 'bg-green-100' : 'bg-red-100'} border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+        />
+        <Button>Enviar</Button>
+    </form>
+  );
+};
+
 
 
      let products = cart.items.map(product => {
@@ -125,16 +226,20 @@ if(params.cantidad >= params.cantity ){
   
     return (
     
-      <div >
+      <div className="flex flex-wrap justify-center">
+       <div className="my-5 px-5 md:basis-1/2 sm:basis-1 w-full">
         <h3>Eliminar todo: </h3>
-              <button onClick={()=>deleteAll()}type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              <button onClick={()=>deleteAll()} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-</svg>
-
-<span className="sr-only">Icon description</span>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+              </svg>
+              <span className="sr-only">Icon description</span>
               </button>
-      {products}
+        {products}
+        </div>
+        <div  className="my-5 px-5 md:basis-1/2 sm:basis-1 w-full">
+        {EmailValidationForm()}
+        </div>
      </div>
     );
   };

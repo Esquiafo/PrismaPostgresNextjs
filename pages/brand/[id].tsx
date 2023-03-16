@@ -37,35 +37,35 @@ export default function BrandID() {
         if(brandContent.length>0){
           ViewSource =  brandContent.map(items=>{
                 return(
-                    <div key={items.id} className=" ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300 border-4 rounded dark:border-sky-900  inline-block filter-none  m-8">
+                  <div key={items.id} className=" ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300 border-4 rounded dark:border-sky-900  inline-block filter-none  m-8">
                    
-                    <div className="max-w-sm ">
-                    <div>
-                    <img className="" src="https://flowbite.com/docs/images/blog/image-1.jpg"/>
-                    <div className="my-5">
-                    <h5 className=" text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                    {items.title}
-                    </h5>
-                    <p className=" font-normal text-gray-700 dark:text-gray-300">
-                    ${items.price}
-                    </p>
-                    </div>
-                    <div className="justify-between flex">
-                    <Link key={`${items.id}product`} href={`/product/${items.id}`}>
-                    <Button className="ml-5 mb-5">
-                      Detalle
-                    </Button>
-                    </Link>
-                    <Link key={`${items.id}carrito`} href={`/carrito/${items.id}`}>
-                    <Button color="success" className="mr-5 mb-5">
-                      Comprar
-                    </Button> 
-                    </Link>
-                    </div>
-                    </div>
-                    </div>
-                 
-                    </div>
+                  <div className="max-w-sm pb-2">
+                  <div>
+                  <img className="" src="https://flowbite.com/docs/images/blog/image-1.jpg"/>
+                  <div className="my-5">
+                  <h5 className=" text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  {items.title}
+                  </h5>
+                  <p className=" font-normal text-gray-700 dark:text-gray-300">
+                  ${items.price}
+                  </p>
+                  </div>
+                  <div className="justify-center flex ">
+                  <Link key={`${items.id}product`} href={`/product/${items.id}`}>
+                  <Button>
+                    Vermas
+                  </Button>
+                  </Link>
+{/*                     <Link key={`${items.id}carrito`} href={`/carrito/${items.id}`}>
+                  <Button color="success" className="mr-5 mb-5">
+                    Comprar
+                  </Button> 
+                  </Link> */}
+                  </div>
+                  </div>
+                  </div>
+               
+                  </div>
                 )
             }) 
            }
