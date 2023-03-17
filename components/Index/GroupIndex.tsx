@@ -4,6 +4,8 @@ import Link from "next/link";
 export default function IndexContext() {
    const [dataC, setDataC] = useState({});
    let categoryContent:Array<any> = []
+   const [isLoadingBrand, setIsLoadingBrand] = useState(false);
+   const [isLoadingCategory, setIsLoadingCategory] = useState(false);
    useEffect(() => {
       const handle = async () => {
        const response = await fetch(
@@ -11,6 +13,7 @@ export default function IndexContext() {
        );
        const responseJson = await response.json();
        setDataC(responseJson);
+       setIsLoadingCategory(true);
      };
      handle()
    }, []);
@@ -23,6 +26,7 @@ export default function IndexContext() {
        );
        const responseJson = await response.json();
        setDataB(responseJson);
+       setIsLoadingBrand(true);
      };
      handle()
    }, []);
@@ -92,16 +96,28 @@ let BrandView = brandContent.map(units => {
 
 <div className=" flex flex-col">
 <h2 className="m-3 pt-5 text-start font-medium text-gray-900 dark:text-white text-3xl font-semibold">Componentes: </h2>
-
-<div  className="mx-2 mb-5 ">
-{CategoryView}
+{isLoadingCategory == true ? (
+ <div  className="mx-2 mb-5 ">
+ {CategoryView}
+ </div>
+) : (
+  <div className="flex justify-center items-center h-screen">
+  <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
 </div>
+)}
+
 <div className=" flex flex-col">
 <h2 className="m-3 pt-5 text-start font-medium text-gray-900 dark:text-white text-3xl font-semibold">Marcas: </h2>
 
-<div  className="mx-2 mb-5 ">
-{BrandView}
+{isLoadingBrand == true ? (
+ <div  className="mx-2 mb-5 ">
+ {BrandView}
+ </div>
+) : (
+  <div className="flex justify-center items-center h-screen">
+  <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
 </div>
+)}
 </div>
  
 </div>  
