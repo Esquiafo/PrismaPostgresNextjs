@@ -9,7 +9,7 @@ import { Cart, CartContextType, CartItem} from "../../interface/Interfaces";
 export default function ProductId() {
   const [cantity, setCantity] = useState(1);
   const [cart, setCart] = useState<Cart>({ items: [], total: 0 });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
@@ -56,7 +56,7 @@ export default function ProductId() {
        );
        const responseJson = await response.json();
        setState(responseJson);
-       setIsLoading(false);
+       setIsLoading(true);
      };
      if (router.asPath !== router.route) {
       handle()
@@ -269,7 +269,7 @@ return(
               )}
             }
 
-            if (isLoading) {
+            if (!isLoading) {
               return (
                 <div className="flex justify-center items-center h-screen">
                   <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>

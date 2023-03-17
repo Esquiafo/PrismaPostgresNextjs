@@ -7,7 +7,7 @@ import { Button, Card } from "flowbite-react";
 export default function BrandID() {
     const router = useRouter()
     const [state, setState] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     let brandContent:Array<any> = []
     useEffect(() => {
       let path = '';
@@ -15,7 +15,7 @@ export default function BrandID() {
         const response = await fetch(`/api/${router.asPath.replace("-", " ")}`);
         const responseJson = await response.json();
         setState(responseJson);
-        setIsLoading(false);
+        setIsLoading(true);
       };
       if (router.asPath !== router.route) {
         handle();
@@ -73,7 +73,7 @@ export default function BrandID() {
            
        
      
-           if (isLoading) {
+           if (!isLoading) {
             return (
               <div className="flex justify-center items-center h-screen">
                 <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
