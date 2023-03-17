@@ -7,20 +7,20 @@ import { Button, Card } from "flowbite-react";
 export default function BrandID() {
     const router = useRouter()
     const [state, setState] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
     let brandContent:Array<any> = []
     useEffect(() => {
-        let path = ''
-        const handle = async () => {
-         const response = await fetch(
-           `/api/${router.asPath.replace("-"," ")}`
-         );
-         const responseJson = await response.json();
-         setState(responseJson);
-       };
-       if (router.asPath !== router.route) {
-        handle()
-        }
-     }, [router.isReady]);
+      let path = '';
+      const handle = async () => {
+        const response = await fetch(`/api/${router.asPath.replace("-", " ")}`);
+        const responseJson = await response.json();
+        setState(responseJson);
+        setIsLoading(false);
+      };
+      if (router.asPath !== router.route) {
+        handle();
+      }
+    }, [router.isReady]);
        for (const [key, value] of Object.entries( state )) {
         let dataContent:Array<String> = state[key as keyof typeof state]['items']
         if(dataContent!==undefined){
@@ -73,7 +73,13 @@ export default function BrandID() {
            
        
      
-       
+           if (isLoading) {
+            return (
+              <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+              </div>
+            );
+          }
 
  
   return (
@@ -82,9 +88,12 @@ export default function BrandID() {
 <Navbar></Navbar>
 <div className=" justify-center text-center align-center">
 {ViewSource==undefined ? (
-    <div>
-        No data
-    </div>
+     <div className="text-center mt-16 mb-16">
+     <h2 className="text-3xl font-semibold">Categoria inexistente :( </h2>
+     <p className="mt-2 mb-2">
+     Vuelve al menu principal para encontrar tu producto deseado.
+     </p>
+   </div>
 ) : (
     <div>
         {ViewSource}

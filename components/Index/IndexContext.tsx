@@ -5,10 +5,10 @@ export default function IndexContext() {
   return (
   
 
-
-
 <div>
-<h1 className="pb-5 pt-5 text-xl text-center font-medium text-gray-900 dark:text-white">Productos recientes</h1>
+
+<h2 className="pb-5 pt-5 text-center font-medium text-gray-900 dark:text-white text-3xl font-semibold">Novedades: </h2>
+
   <div className="flex justify-center align-center px-5">
 
 <div className=" text-center h-80 w-80 md:w-5/6 md:h-[25rem] sm:w-screen">

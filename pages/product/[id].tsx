@@ -9,7 +9,7 @@ import { Cart, CartContextType, CartItem} from "../../interface/Interfaces";
 export default function ProductId() {
   const [cantity, setCantity] = useState(1);
   const [cart, setCart] = useState<Cart>({ items: [], total: 0 });
-      
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
@@ -56,12 +56,13 @@ export default function ProductId() {
        );
        const responseJson = await response.json();
        setState(responseJson);
+       setIsLoading(false);
      };
      if (router.asPath !== router.route) {
       handle()
       }
    }, [router.isReady]);
-            let ViewProduct=()=>{return <div>Loading</div>}
+            let ViewProduct=()=>{return <div>Empty</div>}
             let ProductList:any
             for (const [key, value] of Object.keys( state )) {
               let objValue = state[key as keyof typeof state]
@@ -267,16 +268,35 @@ return(
 </div>
               )}
             }
-  return (
 
-    <div>
-         
-<Navbar></Navbar>
-{ViewProduct()}
-   
-<Foot></Foot>
- 
-    </div>
-  );
+            if (isLoading) {
+              return (
+                <div className="flex justify-center items-center h-screen">
+                  <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+                </div>
+              );
+            }
+          
+            return (
+              <>
+              <Navbar></Navbar>
+                {ViewProduct().props.children == "Empty" ? (
+                  <div className="text-center mt-16 mb-16">
+                    <h2 className="text-3xl font-semibold">Producto inexistente :( </h2>
+                    <p className="mt-2 mb-2">
+                    Vuelve al menu principal para encontrar tu producto deseado.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                  {ViewProduct()}
+                  </>
+                 
+              )}
+            <Foot></Foot>
+              </>
+          
+                    
+            )
 
 }
