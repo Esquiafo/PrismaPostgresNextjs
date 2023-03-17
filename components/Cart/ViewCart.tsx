@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Cart, CartContextType, CartItem} from "../../interface/Interfaces";
 export default function CartView() {
   const [cart, setCart] = useState<Cart>({ items: [], total: 0 });
-      
+
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
@@ -15,6 +15,7 @@ export default function CartView() {
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
+  let finalPrice = 0;
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
@@ -91,42 +92,41 @@ const validateTelephone = (telephone: string) => {
   const telephoneRegex =/^(\+?\d{8,14})$/
   return telephoneRegex.test(telephone);
 };
+const [email, setEmail] = useState('');
+const [isValidEmail, setIsValidEmail] = useState(false);
+const [nombre, setNombre] = useState('');
+const [isValidName, setIsValidName] = useState(false);
+const [telephone, setTelephone] = useState('');
+const [isValidTelephone, setIsValidTelephone] = useState(false);
+const [reEmail, setReEmail] = useState('')
+const [isReValidEmail, setRevalidEmail] = useState(false)
 
+const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const enteredEmail = event.target.value;
+  setEmail(enteredEmail);
+  setIsValidEmail(validateEmail(enteredEmail));
+};
+const handleReEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const enteredEmail = event.target.value;
+  setEmail(email);
+  setReEmail(enteredEmail);
+  email === enteredEmail ? setRevalidEmail(true) : setRevalidEmail(false);
+};
+const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const enteredName = event.target.value;
+  setNombre(enteredName);
+  setIsValidName(validateName(enteredName));
+};
+
+const handleTelephoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const enteredTelephone = event.target.value;
+  setTelephone(enteredTelephone);
+  setIsValidTelephone(validateTelephone(enteredTelephone));
+};
 const EmailValidationForm = () => {
-  const [email, setEmail] = useState('');
-  const [isValidEmail, setIsValidEmail] = useState(false);
-  const [name, setName] = useState('');
-  const [isValidName, setIsValidName] = useState(false);
-  const [telephone, setTelephone] = useState('');
-  const [isValidTelephone, setIsValidTelephone] = useState(false);
-  const [reEmail, setReEmail] = useState('')
-  const [isReValidEmail, setRevalidEmail] = useState(false)
-
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const enteredEmail = event.target.value;
-    setEmail(enteredEmail);
-    setIsValidEmail(validateEmail(enteredEmail));
-  };
-  const handleReEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const enteredEmail = event.target.value;
-    setEmail(email);
-    setReEmail(enteredEmail);
-    email === enteredEmail ? setRevalidEmail(true) : setRevalidEmail(false);
-  };
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const enteredName = event.target.value;
-    setName(enteredName);
-    setIsValidName(validateName(enteredName));
-  };
-
-  const handleTelephoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const enteredTelephone = event.target.value;
-    setTelephone(enteredTelephone);
-    setIsValidTelephone(validateTelephone(enteredTelephone));
-  };
 
   return (
-
+ 
     <form>
 
 
@@ -157,7 +157,7 @@ const EmailValidationForm = () => {
         type="text"
         id="name"
         name="name"
-        value={name}
+        value={nombre}
         onChange={handleNameChange}
         className={`${isValidName ? 'bg-green-100' : 'bg-red-100'} border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}        />
       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="email">Celular:</label>
@@ -169,16 +169,16 @@ const EmailValidationForm = () => {
         onChange={handleTelephoneChange}
         className={`${isValidTelephone ? 'bg-green-100' : 'bg-red-100'} border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
         />
-        <Button>Send</Button>
+
     </form>
   );
 };
 
 
 
-     let products = cart.items.map(product => {
-      console.log(product)
-        console.log(cantidad)
+const products = cart.items.map(product => {
+      finalPrice += product.price * product.cantidad
+        console.log(finalPrice)
       
 
           return (
@@ -221,12 +221,18 @@ const EmailValidationForm = () => {
       
       })
   
-  
-  // Handler de elementos del formulario
-  
-    return (
-    
-      <div className="flex flex-wrap justify-center">
+  return (
+    <>
+      {cart.items.length === 0 ? (
+        <div className="text-center mt-16 mb-16">
+          <h2 className="text-3xl font-semibold">Tu carrito esta vacío.</h2>
+          <p className="mt-2 mb-2">
+            No tienes productos agregados en tu carrito todavía. ¡Agrega algunos para continuar!
+          </p>
+        </div>
+      ) : (
+     
+          <div className="flex flex-wrap justify-center">
        <div className="my-5 px-5 md:basis-1/2 sm:basis-1 w-full">
         <h3>Eliminar todo: </h3>
               <button onClick={()=>deleteAll()} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -239,7 +245,16 @@ const EmailValidationForm = () => {
         </div>
         <div  className="my-5 px-5 md:basis-1/2 sm:basis-1 w-full">
         {EmailValidationForm()}
-        </div>
-     </div>
-    );
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="email">   Costo productos:  ${finalPrice}</label>
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="email">   Costo envio:  $1200</label>
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="email">   Costo final:  ${finalPrice+1200}</label>
+        <Button>Comprar</Button>
+          </div>
+          </div>
+    )}
+ 
+    </>
+
+          
+  )
   };
