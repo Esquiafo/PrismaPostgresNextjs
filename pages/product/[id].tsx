@@ -1,6 +1,7 @@
-import Navbar from "@/components/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
+import Foot from "../../components/Footer/Footer";
 import React,{ useEffect, useState, useContext } from "react";
-import Foot from "@/components/Footer";
+
 import { useRouter} from 'next/router'
 import { Button, Carousel, Table } from "flowbite-react";
 import { Cart, CartContextType, CartItem} from "../../interface/Interfaces";

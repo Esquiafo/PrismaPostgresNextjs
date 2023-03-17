@@ -1,7 +1,7 @@
 import React,{ useEffect, useState } from "react";
 import IndexContext from './IndexContext'
-import Navbar from "./Navbar";
-import Foot from "./Footer";
+import Navbar from "../Navbar/Navbar";
+import Foot from "../Footer/Footer";
 import GroupIndex from "./GroupIndex";
 export default function FrontPage() {
 

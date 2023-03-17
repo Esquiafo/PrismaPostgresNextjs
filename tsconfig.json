@@ -19,6 +19,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/ViewCart.tsx", "components/CartContext.ts", "components/CartContext.ts"],
+  "include": ["next-env.d.ts", "**/*.ts"],
   "exclude": ["node_modules", "dist", "lib"]
 }

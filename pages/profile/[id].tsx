@@ -1,6 +1,6 @@
-import Navbar from "@/components/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
+import Foot from "../../components/Footer/Footer";
 import React,{ useEffect, useState } from "react";
-import Foot from "@/components/Footer";
 import { useRouter } from 'next/router'
 export default function BrandID() {
     const router = useRouter()

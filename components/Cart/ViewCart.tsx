@@ -1,7 +1,7 @@
 import { Button } from 'flowbite-react';
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Cart, CartContextType, CartItem} from "../interface/Interfaces";
+import { Cart, CartContextType, CartItem} from "../../interface/Interfaces";
 export default function CartView() {
   const [cart, setCart] = useState<Cart>({ items: [], total: 0 });
       
@@ -169,7 +169,7 @@ const EmailValidationForm = () => {
         onChange={handleTelephoneChange}
         className={`${isValidTelephone ? 'bg-green-100' : 'bg-red-100'} border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
         />
-        <Button>Enviar</Button>
+        <Button>Send</Button>
     </form>
   );
 };
@@ -231,7 +231,7 @@ const EmailValidationForm = () => {
         <h3>Eliminar todo: </h3>
               <button onClick={()=>deleteAll()} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
               <span className="sr-only">Icon description</span>
               </button>

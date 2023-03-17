@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React,{ useEffect, useState } from "react";
-import Foot from "@/components/Footer";
+import Navbar from "../../components/Navbar/Navbar";
+import Foot from "../../components/Footer/Footer";
 export default function Home() {
 
   return (
@@ -11,7 +12,7 @@ export default function Home() {
         <meta name="description" content="Index" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
+      <Navbar></Navbar>
 <div className=" justify-center text-center align-center">
 <h1>Index Category</h1>
 

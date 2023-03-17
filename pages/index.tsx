@@ -1,6 +1,6 @@
 import Head from "next/head";
 import React,{ useEffect, useState } from "react";
-import FrontPage from "@/components/FrontPage";
+import FrontPage from "../components/Index/FrontPage";
 export default function Home() {
 
   return (

@@ -1,7 +1,7 @@
-import Navbar from "@/components/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import React,{ useEffect, useState } from "react";
-import Foot from "@/components/Footer";
-import { useRouter } from 'next/router'
+import Foot from "../../components/Footer/Footer";
+import { useRouter } from 'next/router' 
 import Link from "next/link";
 import { Button, Card } from "flowbite-react";
 export default function BrandID() {
