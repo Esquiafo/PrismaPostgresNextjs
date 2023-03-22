@@ -72,12 +72,6 @@ if(params.cantidad >= params.cantity ){
   setCart({ items: cart.items, total: updatedTotal });
 }
 }
-/* 
-let validEmail = .test(email)
-let validName = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/.test(nombre)
-let validPhone = /\b(?:\d[ ]*?){6,}\b/.test(phone)
-let validEmailEmail = email == validemail */
-
 const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
