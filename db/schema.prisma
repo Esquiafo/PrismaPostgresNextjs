@@ -15,8 +15,8 @@ model Product {
   brand        Brand[]
   category     Category[]
   description  Json[]
-  cantity      Int?
-  price        Float
+  quantity     Int       
+  price        Float     
   authenticity Int?
   returnPolicy Int?
   warranty     Int?
@@ -28,7 +28,7 @@ model Sell {
   id        String   @id @unique @default(cuid())
   userId    String?
   address   String?
-  price     Float
+  price     Float    
   status    Int?
   sold      Json[]
   user      User?    @relation(fields: [userId], references: [id])
@@ -38,7 +38,7 @@ model Sell {
 
 model Category {
   id        String    @id @unique @default(cuid())
-  name      String?
+  name      String    @unique
   image     String?
   items     Product[]
   createdAt DateTime  @default(now())
@@ -47,7 +47,7 @@ model Category {
 
 model Brand {
   id        String    @id @unique @default(cuid())
-  name      String?   @unique
+  name      String    @unique
   image     String?
   items     Product[]
   createdAt DateTime  @default(now())
@@ -58,7 +58,8 @@ model User {
   id            String   @id @unique @default(cuid())
   name          String?
   surname       String?
-  email         String?  @unique
+  email         String   @unique
+  password      String
   phone         String?
   purchases     Sell[]
   emailVerified Boolean?

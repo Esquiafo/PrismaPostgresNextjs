@@ -6,6 +6,9 @@ import Foot from "../../components/Footer/Footer";
 
 
 export default function Home() {
+
+  const [stateCreate, setStateCreate]:any = useState('');
+  const [stateLogin, setStateLogin]:any = useState('');
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -87,16 +90,17 @@ export default function Home() {
     setIsValidTelephone(validateTelephone(enteredTelephone));
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmitLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
+      const response = await fetch('/api/user', {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email,
+          loginEmail,
+          loginPassword
     /*       password,
           firstName,
           lastName, */
@@ -108,6 +112,34 @@ export default function Home() {
       console.error('Error:', error);
     }
   };
+  //Valida si existe el mail create
+  useEffect(() => {
+    let path = ''
+    const handle = async () => {
+     const response = await fetch(
+       `/api/user/${email}`
+     );
+     const responseJson = await response.json();
+     setStateCreate(responseJson);
+
+   };
+   if (isValidEmail) {
+    handle()
+    }
+ }, [email]);
+
+ //Valida si existe el mail login con un click
+
+  const runLogin = async () => {
+   const response = await fetch(
+     `/api/user/${loginEmail}`
+   );
+   const responseJson = await response.json();
+   console.log(responseJson);
+   setStateLogin(responseJson);
+ };
+ 
+console.log(loginEmail)
  const LoginCreate = ()=>{
   return(
     <div className="flex flex-wrap justify-center">
@@ -115,10 +147,10 @@ export default function Home() {
     <div className="md:basis-1/2 my-5 px-8 sm:basis-1 relative">
     <div className="flex justify-center align-center ">
     
-    <form className="min-w-[400px]">
+    <form action="/api/user" method="GET" className="min-w-[400px]">
     <h1 className="text-2xl font-bold mb-6">Iniciar Sesion</h1>
     <div className="mb-6">
-    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tu correo electronico</label>
+    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tu correo electronico</label>
             
           <input 
           type="email" 
@@ -130,7 +162,7 @@ export default function Home() {
              
                </div>
                <div className= "mb-6">
-               <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tu contraseña</label>
+               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tu contraseña</label>
                    
           <input 
           type="password" 
@@ -146,15 +178,17 @@ export default function Home() {
 
                  <input id="remember" type="checkbox" value="" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required/>
                </div>
-               <label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
+               <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
              </div>
-             <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-           </form>
-    
+
+             <button type="submit" className=" flex items-start mb-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+        
+                </form>
+                
     </div>
     </div>
     <div  className="md:basis-1/2 my-5 px-8 sm:basis-1 w-full">
-    <form className="min-w-[400px]">
+    <form className="min-w-[300px]">
     <h1 className="text-2xl font-bold mb-6">Crear Usuario</h1>
       <div className="relative z-0 w-full mb-6 group">
           <input 
@@ -163,7 +197,7 @@ export default function Home() {
           name="email"
           value={email}
           onChange={handleEmailChange}
-          className={`${isValidEmail ? 'bg-green-100 dark:bg-green-100' : 'bg-red-100 dark:bg-red-100'}  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+          className={`${isValidEmail ? `${stateCreate.length>=1 ? 'bg-orange-500' : 'bg-green-200'}` : 'bg-red-100 dark:bg-red-100'}  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500`}
          placeholder=" " 
           required />
           <label htmlFor="floating_email" className="  pl-1 peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-8 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text- peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-8">Correo Electronico</label>
@@ -234,7 +268,7 @@ export default function Home() {
         </div>
 
       </div>
-      <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+      <button  type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
     </form>
     </div>
     

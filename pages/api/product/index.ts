@@ -20,5 +20,5 @@ async function createProduct(req: NextApiRequest): Promise<Product> {
   })
 }
 async function getProduct(req: NextApiRequest): Promise<Array<Product>> {
-    return await prisma.product.findMany({})
+  return await prisma.product.findMany({})
 }
