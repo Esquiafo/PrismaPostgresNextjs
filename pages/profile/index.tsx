@@ -2,11 +2,20 @@ import Head from "next/head";
 import React,{ useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Foot from "../../components/Footer/Footer";
-
-
+import { signIn, signOut, useSession } from 'next-auth/react';
+import { useRouter } from "next/router";
+import axios from 'axios'
+interface UserLogin {
+  loginEmail: string;
+  loginPassword: string;
+}
+interface UserCreate {
+  email: string;
+  password: string;
+}
 
 export default function Home() {
-
+  const [jsonResponse, setJsonResponse] = useState(null);
   const [stateCreate, setStateCreate]:any = useState('');
   const [stateLogin, setStateLogin]:any = useState('');
   const validateEmail = (email: string) => {
@@ -90,28 +99,7 @@ export default function Home() {
     setIsValidTelephone(validateTelephone(enteredTelephone));
   };
 
-  const handleSubmitLogin = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch('/api/user', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          loginEmail,
-          loginPassword
-    /*       password,
-          firstName,
-          lastName, */
-        }),
-      });
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+
   //Valida si existe el mail create
   useEffect(() => {
     let path = ''
@@ -138,8 +126,34 @@ export default function Home() {
    console.log(responseJson);
    setStateLogin(responseJson);
  };
- 
-console.log(loginEmail)
+
+
+ async function handleSubmitLogin(event: React.FormEvent<HTMLFormElement>) {
+   event.preventDefault();
+   
+   const user: UserLogin = { loginEmail, loginPassword };
+
+   try {
+     const response = await axios.post('/api/login', user);
+     console.log(response.data);
+   } catch (error) {
+     console.error(error);
+   }
+ }
+ async function handleSubmitCreate(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+  
+  const user: UserCreate = { email, password };
+
+  try {
+    const response = await axios.post('/api/user', user);
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
  const LoginCreate = ()=>{
   return(
     <div className="flex flex-wrap justify-center">
@@ -147,14 +161,13 @@ console.log(loginEmail)
     <div className="md:basis-1/2 my-5 px-8 sm:basis-1 relative">
     <div className="flex justify-center align-center ">
     
-    <form action="/api/user" method="GET" className="min-w-[400px]">
+    <form onSubmit={handleSubmitLogin} className="min-w-[400px]">
     <h1 className="text-2xl font-bold mb-6">Iniciar Sesion</h1>
     <div className="mb-6">
     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tu correo electronico</label>
             
           <input 
-          type="email" 
-          id="email"
+          type="email"
           name="email"
           value={loginEmail}
           onChange={handleLoginEmailChange}
@@ -165,11 +178,10 @@ console.log(loginEmail)
                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tu contraseña</label>
                    
           <input 
-          type="password" 
-          id="password"
-          name="password"
-          value={loginPassword}
-          onChange={handleLoginPasswordChange}
+            type="password"
+            name="password"
+            value={loginPassword}
+            onChange={handleLoginPasswordChange}
           className={`${isValidLoginPassword ? 'bg-green-100 dark:bg-green-100' : 'bg-red-100 dark:bg-red-100'}  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500`} placeholder="correo@dominio.com" required/>
           
           </div>
@@ -188,8 +200,8 @@ console.log(loginEmail)
     </div>
     </div>
     <div  className="md:basis-1/2 my-5 px-8 sm:basis-1 w-full">
-    <form className="min-w-[300px]">
-    <h1 className="text-2xl font-bold mb-6">Crear Usuario</h1>
+    <form onSubmit={handleSubmitCreate} className="min-w-[300px]">
+    <h1  className="text-2xl font-bold mb-6">Crear Usuario</h1>
       <div className="relative z-0 w-full mb-6 group">
           <input 
           type="email" 
