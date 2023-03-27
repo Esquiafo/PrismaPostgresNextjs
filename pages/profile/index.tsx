@@ -2,8 +2,6 @@ import Head from "next/head";
 import React,{ useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Foot from "../../components/Footer/Footer";
-import { signIn, signOut, useSession } from 'next-auth/react';
-import { useRouter } from "next/router";
 import axios from 'axios'
 interface UserLogin {
   loginEmail: string;
@@ -12,9 +10,14 @@ interface UserLogin {
 interface UserCreate {
   email: string;
   password: string;
+  nombre: string;
+  surname: string;
+  phone: string;
 }
+const apiKeySecret = process.env.API_KEY;
 
 export default function Home() {
+  console.log(apiKeySecret)
   const [jsonResponse, setJsonResponse] = useState(null);
   const [stateCreate, setStateCreate]:any = useState('');
   const [stateLogin, setStateLogin]:any = useState('');
@@ -36,9 +39,9 @@ export default function Home() {
     return surnameRegex.test(surname);
   };
   
-  const validateTelephone = (telephone: string) => {
-    const telephoneRegex =/^(\+?\d{8,14})$/
-    return telephoneRegex.test(telephone);
+  const validateTelephone = (phone: string) => {
+    const phoneRegex =/^(\+?\d{8,14})$/
+    return phoneRegex.test(phone);
   };
   const [loginEmail, setLoginEmail] = useState('');
   const [isValidLoginEmail, setIsValidLoginEmail] = useState(false);
@@ -50,7 +53,7 @@ export default function Home() {
   const [isValidName, setIsValidName] = useState(false);
   const [surname, setSurname] = useState('');
   const [isValidSurname, setIsValidSurname] = useState(false);
-  const [telephone, setTelephone] = useState('');
+  const [phone, setTelephone] = useState('');
   const [isValidTelephone, setIsValidTelephone] = useState(false);
   const [password, setPassword] = useState('')
   const [isValidPassword, setValidPassword] = useState(false)
@@ -134,7 +137,9 @@ export default function Home() {
    const user: UserLogin = { loginEmail, loginPassword };
 
    try {
-     const response = await axios.post('/api/login', user);
+     const response = await axios.post('/api/login', user, { 
+      headers: { Authorization: apiKeySecret },
+      });
      console.log(response.data);
    } catch (error) {
      console.error(error);
@@ -143,7 +148,7 @@ export default function Home() {
  async function handleSubmitCreate(event: React.FormEvent<HTMLFormElement>) {
   event.preventDefault();
   
-  const user: UserCreate = { email, password };
+  const user: UserCreate = { email, password, nombre, surname, phone  };
 
   try {
     const response = await axios.post('/api/user', user);
@@ -268,10 +273,10 @@ export default function Home() {
       <div className="grid md:grid-cols-2 md:gap-6">
       <div className="relative z-0 w-full mb-6 group">
            <input 
-            type="telephone" 
-            id="telephone"
-            name="telephone"
-            value={telephone}
+            type="phone" 
+            id="phone"
+            name="phone"
+            value={phone}
             onChange={handleTelephoneChange} 
             className={`${isValidTelephone ? 'bg-green-100 dark:bg-green-100' : 'bg-red-100 dark:bg-red-100'}  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500`}
             placeholder=" " 

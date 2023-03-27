@@ -21,13 +21,18 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  if (req.method == "POST") {
-    const user = await createUser(req);
-    res.status(201).json(user);
-  } else {
-    let users = await getUsers(req);
-    res.status(200).json(users);
-  }
+  if (req.headers.authorization !== process.env.API_KEY) {
+    return res.status(401).send("You are not authorized to call this API");
+  } else{ 
+    if (req.method == "POST") {
+      const user = await createUser(req);
+      res.status(201).json(user);
+    } else {
+      let users = await getUsers(req);
+      res.status(200).json(users);
+    }
+   }
+
 }
 
 async function createUser(req: NextApiRequest): Promise<User> {

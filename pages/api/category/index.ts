@@ -7,8 +7,12 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   if (req.method == "POST") {
-    const category = await createCategory(req)
-    res.status(201).json(category)
+    if (req.headers.authorization !== process.env.API_KEY) {
+      return res.status(401).send("You are not authorized to call this API");
+    } else{ 
+      const category = await createCategory(req)
+      res.status(201).json(category)
+    }
   } else {
     let category = await getCategory(req)
     res.status(200).json(category)

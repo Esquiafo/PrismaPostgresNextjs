@@ -6,12 +6,23 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
+
   if (req.method == "PUT") {
-    const brand = await putBrand(req)
-    res.status(201).json(brand)
+    if (req.headers.authorization !== process.env.API_KEY) {
+      return res.status(401).send("You are not authorized to call this API");
+    } else{
+      const brand = await putBrand(req)
+      res.status(201).json(brand)
+    }
+
   } else if (req.method == "DELETE") {
-    const brand = await deleteBrand(req)
-    res.status(201).json(brand)
+    if (req.headers.authorization !== process.env.API_KEY) {
+      return res.status(401).send("You are not authorized to call this API");
+    } else{
+      const brand = await deleteBrand(req)
+      res.status(201).json(brand)
+    }
+
   } else {
     const brand = await getBrand(req)
     res.status(200).json(brand)

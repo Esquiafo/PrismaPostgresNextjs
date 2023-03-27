@@ -1,4 +1,4 @@
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -9,12 +9,19 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  if (req.method === "POST") {
-    const user = await checkUser(req);
-    res.status(200).json(user);
-    return; // send the response and exit the function
+  if (req.headers.authorization !== process.env.API_KEY) {
+    return res.status(401).send("You are not authorized to call this API");
+  } else{
+    if (req.method === "POST") {
+      const user = await checkUser(req);
+      res.status(200).json(user);
+      return;
+    }
+    return res.status(401).send("You are not authorized to call this API");
   }
-  
+
+
+ 
 }
 
 async function checkUser(req: NextApiRequest): Promise<any> {
@@ -34,12 +41,15 @@ async function checkUser(req: NextApiRequest): Promise<any> {
       loginSession: true,
     },
   });
-
+  console.log('hi')
   if (!user) {
     return { error: "Invalid email or password" };
   }
-  console.log('//////////////////////')
-  const isPasswordCorrect = await bcrypt.compare(req.body.loginPassword, user.password);
+
+  const isPasswordCorrect = await bcrypt.compare(
+    req.body.loginPassword,
+    user.password
+  );
 
   if (!isPasswordCorrect) {
     return { error: "Invalid email or password" };

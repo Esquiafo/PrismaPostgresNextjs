@@ -19,16 +19,21 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  if (req.method == "PUT") {
-    const user = await putUser(req)
-    res.status(201).json(user)
-  } else if (req.method == "DELETE") {
-    const user = await deleteUser(req)
-    res.status(201).json(user)
-  } else {
-    let user = await getUser(req)
-    res.status(200).json(user)
+  if (req.headers.authorization !== process.env.API_KEY) {
+    return res.status(401).send("You are not authorized to call this API");
+  } else{
+    if (req.method == "PUT") {
+      const user = await putUser(req)
+      res.status(201).json(user)
+    } else if (req.method == "DELETE") {
+      const user = await deleteUser(req)
+      res.status(201).json(user)
+    } else {
+      let user = await getUser(req)
+      res.status(200).json(user)
+    }
   }
+  
 }
 async function putUser(req: NextApiRequest): Promise<Array<User>> {
   const query:string = req.query.id as string;

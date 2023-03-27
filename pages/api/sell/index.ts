@@ -6,13 +6,19 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  if (req.method == "POST") {
-    const sell = await createSell(req)
-    res.status(201).json(sell)
-  } else {
-    let sells = await getSell(req)
-    res.status(200).json(sells)
+  if (req.headers.authorization !== process.env.API_KEY) {
+    return res.status(401).send("You are not authorized to call this API");
+  } else{ 
+    if (req.method == "POST") { 
+    
+      const sell = await createSell(req)
+      res.status(201).json(sell)
+    } else {
+      let sells = await getSell(req)
+      res.status(200).json(sells)
+    }
   }
+
 }
 async function createSell(req: NextApiRequest): Promise<Sell> {
   return await prisma.sell.create({

@@ -7,8 +7,13 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   if (req.method == "POST") {
+    if (req.headers.authorization !== process.env.API_KEY) {
+      return res.status(401).send("You are not authorized to call this API");
+    } else{ 
     const product = await createProduct(req)
     res.status(201).json(product)
+     }
+    
   } else {
     let products = await getProduct(req)
     res.status(200).json(products)
