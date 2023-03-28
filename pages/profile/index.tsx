@@ -17,7 +17,6 @@ interface UserCreate {
 const apiKeySecret = process.env.API_KEY;
 
 export default function Home() {
-  console.log(apiKeySecret)
   const [jsonResponse, setJsonResponse] = useState(null);
   const [stateCreate, setStateCreate]:any = useState('');
   const [stateLogin, setStateLogin]:any = useState('');
@@ -105,19 +104,21 @@ export default function Home() {
 
   //Valida si existe el mail create
   useEffect(() => {
-    let path = ''
-    const handle = async () => {
-     const response = await fetch(
-       `/api/user/${email}`
-     );
-     const responseJson = await response.json();
-     setStateCreate(responseJson);
-
-   };
-   if (isValidEmail) {
-    handle()
+    let path = '';
+    const headers = new Headers();
+    if (apiKeySecret) {
+      headers.append('Authorization', apiKeySecret);
     }
- }, [email]);
+    const handle = async () => {
+      const response = await fetch(`/api/user/${email}`, { headers });
+      const responseJson = await response.json();
+      setStateCreate(responseJson);
+    };
+    if (isValidEmail) {
+      handle();
+    }
+  }, [email]);
+  
 
  //Valida si existe el mail login con un click
 
@@ -126,7 +127,6 @@ export default function Home() {
      `/api/user/${loginEmail}`
    );
    const responseJson = await response.json();
-   console.log(responseJson);
    setStateLogin(responseJson);
  };
 
@@ -140,7 +140,11 @@ export default function Home() {
      const response = await axios.post('/api/login', user, { 
       headers: { Authorization: apiKeySecret },
       });
-     console.log(response.data);
+      if (!response.data.error) {
+        alert('passcorrecta')
+      }else{
+        alert(response.data.error)
+      }
    } catch (error) {
      console.error(error);
    }
@@ -151,7 +155,9 @@ export default function Home() {
   const user: UserCreate = { email, password, nombre, surname, phone  };
 
   try {
-    const response = await axios.post('/api/user', user);
+    const response = await axios.post('/api/user', user,{ 
+      headers: { Authorization: apiKeySecret },
+      });
     console.log(response.data);
   } catch (error) {
     console.error(error);

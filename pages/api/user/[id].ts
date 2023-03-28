@@ -33,7 +33,6 @@ export default async function handler(
       res.status(200).json(user)
     }
    }
-  
 }
 async function putUser(req: NextApiRequest): Promise<Array<User>> {
   const query:string = req.query.id as string;

@@ -41,7 +41,7 @@ async function checkUser(req: NextApiRequest): Promise<any> {
       loginSession: true,
     },
   });
-  console.log('hi')
+ 
   if (!user) {
     return { error: "Invalid email or password" };
   }
