@@ -57,17 +57,11 @@ async function checkUser(req: NextApiRequest): Promise<any> {
 
   const { id, name, emailVerified } = user;
   const token = jwt.sign({ userId: id }, "your-secret-key-here");
-  const loginSession = await prisma.session.create({
-    data: {
-      user: { connect: { id } },
-      token,
-    },
-  });
+  
 
   return {
     id,
     name,
-    loginSessionId: loginSession.id,
     token,
   };
 }
