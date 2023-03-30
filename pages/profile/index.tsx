@@ -108,9 +108,10 @@ export default function Home() {
     const headers = new Headers();
     if (apiKeySecret) {
       headers.append('Authorization', apiKeySecret);
+      headers.append('Acess', apiKeySecret)
     }
     const handle = async () => {
-      const response = await fetch(`/api/user/${email}`, { headers });
+      const response = await fetch(`/api/user/${email}`, { headers});
       const responseJson = await response.json();
       setStateCreate(responseJson);
     };

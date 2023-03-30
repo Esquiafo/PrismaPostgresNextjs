@@ -9,6 +9,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
+  console.log(req)
   if (req.headers.authorization !== process.env.API_KEY) {
     return res.status(401).send("You are not authorized to call this API");
   } else{
