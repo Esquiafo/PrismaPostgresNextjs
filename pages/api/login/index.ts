@@ -9,16 +9,21 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  console.log(req)
-  if (req.headers.authorization !== process.env.API_KEY) {
-    return res.status(401).send("You are not authorized to call this API");
-  } else{
+
+  const reqOrigin = req.headers.origin;
+  const reqHost = `http://${req.headers.host}`;
+  if (reqHost == reqOrigin || req.headers.authorization == process.env.API_KEY) {
     if (req.method === "POST") {
+      console.log('aca')
       const user = await checkUser(req);
       res.status(200).json(user);
       return;
     }
     return res.status(401).send("You are not authorized to call this API");
+    
+  } else{
+    return res.status(401).send("You are not authorized to call this API");
+    
   }
 
 

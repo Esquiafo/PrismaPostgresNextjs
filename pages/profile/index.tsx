@@ -138,9 +138,7 @@ export default function Home() {
    const user: UserLogin = { loginEmail, loginPassword };
 
    try {
-     const response = await axios.post('/api/login', user, { 
-      headers: { Authorization: apiKeySecret },
-      });
+     const response = await axios.post('/api/login', user);
       if (!response.data.error) {
         alert('passcorrecta')
       }else{
