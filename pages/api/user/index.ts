@@ -35,10 +35,9 @@ export default async function handler(
 
 }
 
-async function createUser(req: NextApiRequest): Promise<User> {
-  console.log(req.body)
-  const { email, password, ...userData } = req.body;
+async function  createUser(req: NextApiRequest): Promise<User> {
   
+  const { email, password, ...userData } = req.body;
   const existingUser = await prisma.user.findUnique({ where: { email } });
   if (existingUser) {
     throw new Error("User with that email already exists.");
@@ -47,8 +46,9 @@ async function createUser(req: NextApiRequest): Promise<User> {
   const hashedPassword = bcrypt.hashSync(password, salt);
   const newUser = await prisma.user.create({
     data: {
-      ...userData,
-      email,
+      email: email,
+      surname: userData.surname,
+      name: userData.nombre,
       password: hashedPassword,
     },
   });
