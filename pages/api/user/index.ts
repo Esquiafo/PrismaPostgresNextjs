@@ -22,7 +22,7 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   const reqOrigin = req.headers.origin;
-  const reqHost = `http://${req.headers.host}`;
+  const reqHost = `https://${req.headers.host}`;
   if (reqHost == reqOrigin || req.headers.authorization == process.env.API_KEY) {
     if (req.method == "POST") {
       const user = await createUser(req);
