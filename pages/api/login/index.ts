@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User, Session } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
@@ -11,7 +11,7 @@ export default async function handler(
 ) {
 
   const reqOrigin = req.headers.origin;
-  const reqHost = `https://${req.headers.host}`;
+  const reqHost = `http://${req.headers.host}`;
   if (reqHost == reqOrigin || req.headers.authorization == process.env.API_KEY) {
     if (req.method === "POST") {
       console.log('aca')
@@ -62,12 +62,18 @@ async function checkUser(req: NextApiRequest): Promise<any> {
   }
 
   const { id, name, emailVerified } = user;
-  const token = jwt.sign({ userId: id }, "your-secret-key-here");
-  
+
+  const secretKey = process.env.SECRET_KEY;
+
+  if (!secretKey) {
+    throw new Error("Secret key is not defined");
+  }
+
+  const token = jwt.sign(id, secretKey);
+
 
   return {
     id,
-    name,
     token,
   };
 }

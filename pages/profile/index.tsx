@@ -3,6 +3,11 @@ import React,{ useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Foot from "../../components/Footer/Footer";
 import axios from 'axios'
+import jwt from "jsonwebtoken";
+import { useRouter } from 'next/router';
+import { Button } from "flowbite-react";
+
+
 interface UserLogin {
   loginEmail: string;
   loginPassword: string;
@@ -14,9 +19,22 @@ interface UserCreate {
   surname: string;
   phone: string;
 }
-const apiKeySecret = process.env.API_KEY;
+
+const secretKey = process.env.API_KEY;
 
 export default function Home() {
+  const [tokenLogin, setTokenLogin] = useState('');
+ 
+  const router = useRouter();
+  const [error, setError] = useState('');
+  
+/*   useEffect(() => {
+    if (cart) {
+
+      });
+    }
+  }, [cart]) */;
+  
   const [jsonResponse, setJsonResponse] = useState(null);
   const [stateCreate, setStateCreate]:any = useState('');
   const [stateLogin, setStateLogin]:any = useState('');
@@ -106,9 +124,9 @@ export default function Home() {
   useEffect(() => {
     let path = '';
     const headers = new Headers();
-    if (apiKeySecret) {
-      headers.append('Authorization', apiKeySecret);
-      headers.append('Acess', apiKeySecret)
+    if (secretKey) {
+      headers.append('Authorization', secretKey);
+      headers.append('Acess', secretKey)
     }
     const handle = async () => {
       const response = await fetch(`/api/user/${email}`, { headers});
@@ -133,46 +151,59 @@ export default function Home() {
 
 
  async function handleSubmitLogin(event: React.FormEvent<HTMLFormElement>) {
-   event.preventDefault();
-   
-   const user: UserLogin = { loginEmail, loginPassword };
+  event.preventDefault();
 
-   try {
-     const response = await axios.post('/api/login', user);
-      if (!response.data.error) {
-        alert('passcorrecta')
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ loginEmail, loginPassword }),
+    });
+    if (res.ok) {
+      const { token, id } = await res.json();
+      localStorage.setItem(id, token);
+      const expirationTime = 10000; // 24 hours in milliseconds
+      setTimeout(() => {
+             localStorage.removeItem(id);
+           }, expirationTime);
+      const tokenAuth = localStorage.getItem(id)
+      console.log(tokenAuth!==undefined)
+      console.log(tokenAuth)
+      if (tokenAuth!=='undefined') {
+        //Redireccion
+        alert("Correcto")
       }else{
-        alert(response.data.error)
+        //Pass incorrecta / mail
+        alert("Incorrecto")
       }
-   } catch (error) {
-     console.error(error);
-   }
- }
+    } else {
+      setError(await res.text());
+    }
+  }
+ 
+
  async function handleSubmitCreate(event: React.FormEvent<HTMLFormElement>) {
   event.preventDefault();
   
   const user: UserCreate = { email, password, nombre, surname, phone  };
 
   try {
-    const response = await axios.post('/api/user', user,{ 
-      headers: { Authorization: apiKeySecret },
-      });
+    const response = await axios.post('/api/user', user);
     console.log(response.data);
   } catch (error) {
     console.error(error);
   }
 }
-
-
+console.log(tokenLogin)
  const LoginCreate = ()=>{
   return(
     <div className="flex flex-wrap justify-center">
-
+ 
     <div className="md:basis-1/2 my-5 px-8 sm:basis-1 relative">
     <div className="flex justify-center align-center ">
-    
+  
     <form onSubmit={handleSubmitLogin} className="min-w-[400px]">
     <h1 className="text-2xl font-bold mb-6">Iniciar Sesion</h1>
+   
     <div className="mb-6">
     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tu correo electronico</label>
             
