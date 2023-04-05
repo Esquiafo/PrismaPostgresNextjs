@@ -5,17 +5,25 @@ import jwt from "jsonwebtoken";
 import cors from "cors";
 
 const prisma = new PrismaClient();
-const corsMiddleware = cors({ origin: process.env.API_URL_KEY });
+async function corsMiddleware(req: NextApiRequest, res: NextApiResponse, next: Function) {
+  return new Promise((resolve, reject) => {
+    cors({ origin: process.env.API_URL_KEY })(req, res, (err?: Error) => {
+      if (err) {
+        console.error(err.message);
+        reject(err);
+      } else {
+        resolve(next());
+      }
+    });
+  });
+}
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  corsMiddleware(req, res, async (err?: Error) => {
-    if (err) {
-      console.error(err.message);
-      res.status(500).send("Internal Server Error");
-    } else {
+  try {
+    await corsMiddleware(req, res, async () => {
       if (req.method === "POST") {
         const user = await checkUser(req);
         if (user.error) {
@@ -24,9 +32,12 @@ export default async function handler(
           res.status(200).json(user);
         }
       }
-    }
-  });
+    });
+  } catch (err) {
+    res.status(500).send("Internal Server Error");
+  }
 }
+
 
 async function checkUser(req: NextApiRequest): Promise<any> {
   console.log(req.body);
