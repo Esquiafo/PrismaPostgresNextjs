@@ -11,7 +11,7 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   
-  res.setHeader("Access-Control-Allow-Origin", "https://frontendname.netlify.app/");
+  res.setHeader("Access-Control-Allow-Origin", "https://prisma-postgres-nextjs.vercel.app/");
   res.setHeader('Access-Control-Allow-Methods', 'POST');
   res.setHeader(
     'Access-Control-Allow-Headers',
