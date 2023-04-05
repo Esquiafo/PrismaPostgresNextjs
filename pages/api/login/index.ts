@@ -8,7 +8,8 @@ const prisma = new PrismaClient();
 
 // Initializing the cors middleware
 // You can read more about the available options here: https://github.com/expressjs/cors#configuration-options
-const cors = Cors({
+const cors =(url:string)=> Cors({
+  origin: `https://${url}`,
   methods: ['POST', 'GET', 'HEAD'],
 })
 
@@ -33,7 +34,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  await runMiddleware(req, res, cors)
+  
+  await runMiddleware(req, res, cors(req.headers.host as string))
   // Rest of the API logic
   if (req.method === "POST") {
     const user = await checkUser(req);
