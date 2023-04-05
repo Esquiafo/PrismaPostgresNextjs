@@ -2,26 +2,27 @@ import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import Cors from 'cors';
+import cors from "cors";
 
 const prisma = new PrismaClient();
-
-const cors = Cors({
-  origin: process.env.API_URL_KEY,
-});
+const corsMiddleware = cors({ origin: process.env.API_URL_KEY });
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  console.log(process.env.API_URL_KEY)
-   cors(req, res, async () => {
-    if (req.method === "POST") {
-      const user = await checkUser(req);
-      if (user.error) {
-        res.status(401).json(user);
-      } else {
-        res.status(200).json(user);
+  corsMiddleware(req, res, async (err?: Error) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send("Internal Server Error");
+    } else {
+      if (req.method === "POST") {
+        const user = await checkUser(req);
+        if (user.error) {
+          res.status(401).json(user);
+        } else {
+          res.status(200).json(user);
+        }
       }
     }
   });
