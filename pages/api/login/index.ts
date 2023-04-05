@@ -5,18 +5,10 @@ import jwt from "jsonwebtoken";
 import cors from "cors";
 
 const prisma = new PrismaClient();
-async function corsMiddleware(req: NextApiRequest, res: NextApiResponse, next: Function) {
-  return new Promise((resolve, reject) => {
-    cors({ origin: process.env.API_URL_KEY })(req, res, (err?: Error) => {
-      if (err) {
-        console.error(err.message);
-        reject(err);
-      } else {
-        resolve(next());
-      }
-    });
-  });
-}
+
+const corsMiddleware = cors({
+  origin: process.env.API_URL_KEY,
+});
 
 export default async function handler(
   req: NextApiRequest,
@@ -38,7 +30,6 @@ export default async function handler(
   }
 }
 
-
 async function checkUser(req: NextApiRequest): Promise<any> {
   console.log(req.body);
 
@@ -57,7 +48,7 @@ async function checkUser(req: NextApiRequest): Promise<any> {
       loginSession: true,
     },
   });
- 
+
   if (!user) {
     return { error: "Invalid email or password" };
   }
