@@ -6,18 +6,38 @@ import jwt, { Secret } from "jsonwebtoken";
 import Cors from 'cors';
 const prisma = new PrismaClient();
 
+// Initializing the cors middleware
+// You can read more about the available options here: https://github.com/expressjs/cors#configuration-options
+const cors =(url:string)=> Cors({
+  origin: true, 
+  methods: ['POST', 'GET', 'HEAD'],
+})
+
+// Helper method to wait for a middleware to execute before continuing
+// And to throw an error when an error happens in a middleware
+function runMiddleware(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  fn: Function
+) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result: any) => {
+      if (result instanceof Error) {
+        return reject(result)
+      }
+
+      return resolve(result)
+    })
+  })
+}
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
+  console.log(req.headers.host)
+  console.log(req.headers.origin)
   
-  res.setHeader("Access-Control-Allow-Origin", "https://prisma-postgres-nextjs.vercel.app/");
-  res.setHeader('Access-Control-Allow-Methods', 'POST');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  )
-
+  await runMiddleware(req, res, cors(req.headers.origin as string))
   // Rest of the API logic
   if (req.method === "POST") {
     const user = await checkUser(req);
