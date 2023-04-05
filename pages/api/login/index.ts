@@ -1,58 +1,35 @@
-
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcryptjs";
-import jwt, { Secret } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import Cors from 'cors';
+
 const prisma = new PrismaClient();
 
-// Initializing the cors middleware
-// You can read more about the available options here: https://github.com/expressjs/cors#configuration-options
-const cors =(url:string)=> Cors({
-  origin: true, 
-  methods: ['POST', 'GET', 'HEAD'],
-})
+const cors = Cors({
+  origin: process.env.API_URL_KEY,
+});
 
-// Helper method to wait for a middleware to execute before continuing
-// And to throw an error when an error happens in a middleware
-function runMiddleware(
-  req: NextApiRequest,
-  res: NextApiResponse,
-  fn: Function
-) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result: any) => {
-      if (result instanceof Error) {
-        return reject(result)
-      }
-
-      return resolve(result)
-    })
-  })
-}
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  console.log(req.headers.host)
-  console.log(req.headers.origin)
-  
-  await runMiddleware(req, res, cors(req.headers.origin as string))
-  // Rest of the API logic
-  if (req.method === "POST") {
-    const user = await checkUser(req);
-    res.status(200).json(user);
-    return user;
-  }
-}
- {
- 
-
-
+  console.log(process.env.API_URL_KEY)
+   cors(req, res, async () => {
+    if (req.method === "POST") {
+      const user = await checkUser(req);
+      if (user.error) {
+        res.status(401).json(user);
+      } else {
+        res.status(200).json(user);
+      }
+    }
+  });
 }
 
 async function checkUser(req: NextApiRequest): Promise<any> {
-  console.log(req.body)
+  console.log(req.body);
+
   const user = await prisma.user.findUnique({
     where: {
       email: req.body.loginEmail,
@@ -90,7 +67,7 @@ async function checkUser(req: NextApiRequest): Promise<any> {
     throw new Error("Secret key is not defined");
   }
 
-  const token = jwt.sign(id, secretKey);
+  const token = jwt.sign({ id, name, emailVerified }, secretKey);
 
   return {
     id,
