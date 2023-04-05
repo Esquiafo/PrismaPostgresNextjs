@@ -42,6 +42,7 @@
     "next": "13.2.4",
     "next-auth": "^4.19.1",
     "next-themes": "^0.2.1",
+    "nextjs-cors": "^2.1.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-id-swiper": "^4.0.0",

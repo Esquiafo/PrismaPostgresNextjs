@@ -1,4 +1,5 @@
-import { PrismaClient, User, Session } from "@prisma/client";
+import { corsHandler } from "../../../middlewares/cors";
+import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcryptjs";
 import jwt, { Secret } from "jsonwebtoken";
@@ -9,30 +10,19 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
+  await corsHandler(req, res); // usa el middleware
 
-  const reqOrigin = req.headers.origin;
-  const reqHost = `https://${req.headers.host}`;
-  if (reqHost == reqOrigin || req.headers.authorization == process.env.API_KEY) {
-    if (req.method === "POST") {
-      console.log('aca')
-      const user = await checkUser(req);
-      res.status(200).json(user);
-      return;
-    }
-    return res.status(401).send("You are not authorized to call this API");
-    
-  } else{
-    return res.status(401).send("You are not authorized to call this API");
-    
+  if (req.method === "POST") {
+    const user = await checkUser(req);
+    res.status(200).json(user);
+    return user;
   }
-
-
- 
+  return res.status(401).send("You are not authorized to call this API");
 }
 
 async function checkUser(req: NextApiRequest): Promise<any> {
   console.log(req.body)
-  const user = await prisma.user.findFirst({
+  const user = await prisma.user.findUnique({
     where: {
       email: req.body.loginEmail,
     },
@@ -63,14 +53,13 @@ async function checkUser(req: NextApiRequest): Promise<any> {
 
   const { id, name, emailVerified } = user;
 
-  const secretKey = process.env.SECRET_KEY;
+  const secretKey = process.env.API_KEY;
 
   if (!secretKey) {
     throw new Error("Secret key is not defined");
   }
 
   const token = jwt.sign(id, secretKey);
-
 
   return {
     id,
