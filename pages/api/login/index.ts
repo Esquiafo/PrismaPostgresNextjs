@@ -1,79 +1,28 @@
-import { PrismaClient } from "@prisma/client";
-import type { NextApiRequest, NextApiResponse } from "next";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import cors from "cors";
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import Cors from "cors";
 
-const prisma = new PrismaClient();
+type CorsMiddleware = (handler: NextApiHandler) => (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 
-const corsMiddleware = cors({
-  origin: process.env.API_URL_KEY,
-});
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<any>
-) {
-  try {
-    await corsMiddleware(req, res, async () => {
-      if (req.method === "POST") {
-        const user = await checkUser(req);
-        if (user.error) {
-          res.status(401).json(user);
-        } else {
-          res.status(200).json(user);
-        }
-      }
-    });
-  } catch (err) {
-    res.status(500).send("Internal Server Error");
-  }
-}
-
-async function checkUser(req: NextApiRequest): Promise<any> {
-  console.log(req.body);
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email: req.body.loginEmail,
-    },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      emailVerified: true,
-      createdAt: true,
-      updatedAt: true,
-      password: true,
-      loginSession: true,
-    },
-  });
-
-  if (!user) {
-    return { error: "Invalid email or password" };
-  }
-
-  const isPasswordCorrect = await bcrypt.compare(
-    req.body.loginPassword,
-    user.password
+const allowCors: CorsMiddleware = (fn) => async (req, res) => {
+  res.setHeader("Access-Control-Allow-Credentials", 'true');
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  // another common pattern
+  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,PATCH,DELETE,POST,PUT");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
   );
-
-  if (!isPasswordCorrect) {
-    return { error: "Invalid email or password" };
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
   }
+  await fn(req, res);
+};
 
-  const { id, name, emailVerified } = user;
+const handler: NextApiHandler = (req, res) => {
+  const d = new Date();
+  res.end(d.toString());
+};
 
-  const secretKey = process.env.API_KEY;
-
-  if (!secretKey) {
-    throw new Error("Secret key is not defined");
-  }
-
-  const token = jwt.sign({ id, name, emailVerified }, secretKey);
-
-  return {
-    id,
-    token,
-  };
-}
+export default allowCors(handler);
