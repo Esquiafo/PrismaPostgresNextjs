@@ -5,7 +5,7 @@ type CorsMiddleware = (handler: NextApiHandler) => (req: NextApiRequest, res: Ne
 
 const allowCors: CorsMiddleware = (fn) => async (req, res) => {
   res.setHeader("Access-Control-Allow-Credentials", 'true');
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin as any);
   // another common pattern
   // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
   res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,PATCH,DELETE,POST,PUT");
