@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   
   if (!req.headers.origin) {
     console.log(req.headers.origin)
-    return res.status(403).json({ error: 'Invalid origin' });
+    return res.status(201).json(req.headers['sec-fetch-site']);
   }
 
   if (req.method === "POST") {
@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(200).json(user);
     return;
   }else{
-    res.status(200).json({status: "OK"});
+    res.status(200).json(req.headers['sec-fetch-site']);
   }
 }
 
