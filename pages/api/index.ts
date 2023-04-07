@@ -1,11 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from "next"
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse<any>
-){
- 
-    res.status(200).json({status: 200})
-    
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  res.status(200).json({ message: 'Hello, world!', timestamp: new Date().toISOString() });
 }
-  
