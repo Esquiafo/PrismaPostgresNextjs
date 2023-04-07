@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 const API_KEY = process.env.API_KEY
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.headers.origin !== 'http://localhost:3000') {
+  if (req.headers.origin !== 'https://prisma-postgres-nextjs.vercel.app/') {
     return res.status(403).json({ error: 'Invalid origin' });
   }
 
