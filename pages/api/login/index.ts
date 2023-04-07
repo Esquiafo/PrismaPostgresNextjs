@@ -2,15 +2,15 @@ import { PrismaClient, User, Session } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcryptjs";
 import jwt, { Secret } from "jsonwebtoken";
+import { stat } from "fs";
 
 const prisma = new PrismaClient();
 const API_KEY = process.env.API_KEY
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   
-  if (!req.headers.origin) {
-    console.log(req.headers.origin)
-    return res.status(201).json(req.headers['sec-fetch-site']);
+  if (!req.headers['sec-fetch-site']) {
+    return res.status(403).json({ error: 'Invalid origin' });
   }
 
   if (req.method === "POST") {
@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(200).json(user);
     return;
   }else{
-    res.status(200).json(req.headers['sec-fetch-site']);
+    res.status(200).json({status: 200});
   }
 }
 
