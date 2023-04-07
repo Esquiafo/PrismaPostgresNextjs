@@ -6,7 +6,7 @@ module.exports = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'http://localhost:3000'
+            value: 'https://prisma-postgres-nextjs.vercel.app/'
           }
         ]
       }
