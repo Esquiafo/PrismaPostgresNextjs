@@ -5,28 +5,22 @@ import jwt, { Secret } from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 const API_KEY = process.env.API_KEY
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<any>
-) {
 
- 
-    if (req.method === "POST") {
-      console.log('aca')
-      const user = await checkUser(req);
-      res.status(200).json(user);
-      return;
-    }else{
-      return res.status(401).send("You are not authorized to call this API");
-    }
-    
-  
-  
-    
-  
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.headers.origin !== 'http://localhost:3000') {
+    return res.status(403).json({ error: 'Invalid origin' });
+  }
 
- 
+  if (req.method === "POST") {
+    console.log('aca')
+    const user = await checkUser(req);
+    res.status(200).json(user);
+    return;
+  }else{
+    res.status(200).json({status: "OK"});
+  }
 }
+
 
 async function checkUser(req: NextApiRequest): Promise<any> {
   console.log(req.body)
