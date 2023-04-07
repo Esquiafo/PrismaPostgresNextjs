@@ -1,28 +1,77 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import Cors from "cors";
+import { PrismaClient, User, Session } from "@prisma/client";
+import type { NextApiRequest, NextApiResponse } from "next";
+import bcrypt from "bcryptjs";
+import jwt, { Secret } from "jsonwebtoken";
 
-type CorsMiddleware = (handler: NextApiHandler) => (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
+const prisma = new PrismaClient();
+const API_KEY = process.env.API_KEY
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<any>
+) {
 
-const allowCors: CorsMiddleware = (fn) => async (req, res) => {
-  res.setHeader("Access-Control-Allow-Credentials", 'true');
-  res.setHeader('Access-Control-Allow-Origin', req.headers.host as any);
-  // another common pattern
-  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
-  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,PATCH,DELETE,POST,PUT");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-  );
-  if (req.method === "GET") {
-    res.status(200).end('GET');
-    return;
+ 
+    if (req.method === "POST") {
+      console.log('aca')
+      const user = await checkUser(req);
+      res.status(200).json(user);
+      return;
+    }else{
+      return res.status(401).send("You are not authorized to call this API");
+    }
+    
+  
+  
+    
+  
+
+ 
+}
+
+async function checkUser(req: NextApiRequest): Promise<any> {
+  console.log(req.body)
+  const user = await prisma.user.findFirst({
+    where: {
+      email: req.body.loginEmail,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      emailVerified: true,
+      createdAt: true,
+      updatedAt: true,
+      password: true,
+      loginSession: true,
+    },
+  });
+ 
+  if (!user) {
+    return { error: "Invalid email or password" };
   }
-  await fn(req, res);
-};
 
-const handler: NextApiHandler = (req, res) => {
-  const d = new Date();
-  res.end(d.toString());
-};
+  const isPasswordCorrect = await bcrypt.compare(
+    req.body.loginPassword,
+    user.password
+  );
 
-export default allowCors(handler);
+  if (!isPasswordCorrect) {
+    return { error: "Invalid email or password" };
+  }
+
+  const { id, name, emailVerified } = user;
+
+  const secretKey = process.env.API_KEY;
+
+  if (!secretKey) {
+    throw new Error("Secret key is not defined");
+  }
+
+  const token = jwt.sign(id, secretKey);
+
+
+  return {
+    id,
+    token,
+  };
+}
