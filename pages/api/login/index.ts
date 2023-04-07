@@ -8,13 +8,11 @@ const prisma = new PrismaClient();
 const API_KEY = process.env.API_KEY
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log(req.headers['sec-fetch-site'])
   if (!req.headers['sec-fetch-site']) {
     return res.status(403).json({ error: 'Invalid origin' });
   }
 
   if (req.method === "POST") {
-    console.log('aca')
     const user = await checkUser(req);
     res.status(200).json(user);
     return;
@@ -25,7 +23,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 
 async function checkUser(req: NextApiRequest): Promise<any> {
-  console.log(req.body)
   const user = await prisma.user.findFirst({
     where: {
       email: req.body.loginEmail,

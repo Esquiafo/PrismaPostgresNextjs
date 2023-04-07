@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   if (req.method == "POST") {
-    if (req.headers.authorization !== process.env.API_KEY) {
+    if (!req.headers['sec-fetch-site']) {
       return res.status(401).send("You are not authorized to call this API");
     } else{ 
       const category = await createCategory(req)

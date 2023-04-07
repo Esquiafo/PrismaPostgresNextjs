@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   if (req.method == "PUT") {
     
-    if (req.headers.authorization !== process.env.API_KEY) {
+     if (!req.headers['sec-fetch-site']) {
       return res.status(401).send("You are not authorized to call this API");
     } else{ 
       const cateogry = await putCategory(req)
@@ -17,7 +17,7 @@ export default async function handler(
    
   } else if (req.method == "DELETE") {
     
-    if (req.headers.authorization !== process.env.API_KEY) {
+     if (!req.headers['sec-fetch-site']) {
       return res.status(401).send("You are not authorized to call this API");
     } else{ 
       const cateogry = await deleteCategory(req)

@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   if (req.method == "PUT") {
-    if (req.headers.authorization !== process.env.API_KEY) {
+    if (!req.headers['sec-fetch-site']) {
       return res.status(401).send("You are not authorized to call this API");
     } else{ 
       const product = await putProduct(req)
@@ -15,7 +15,7 @@ export default async function handler(
      }
 
   } else if (req.method == "DELETE") {
-    if (req.headers.authorization !== process.env.API_KEY) {
+    if (!req.headers['sec-fetch-site']) {
       return res.status(401).send("You are not authorized to call this API");
     } else{ 
       const product = await deleteProduct(req)

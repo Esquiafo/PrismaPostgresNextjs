@@ -19,7 +19,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  if (req.headers['sec-fetch-site']) {
+  if (!req.headers['sec-fetch-site']) {
     return res.status(401).send("You are not authorized to call this API");
   } else{
     if (req.method == "PUT") {
