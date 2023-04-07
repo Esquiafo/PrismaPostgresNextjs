@@ -23,7 +23,7 @@ export default async function handler(
 ) {
   const reqOrigin = req.headers.origin;
   const reqHost = `https://${req.headers.host}`;
-  if (reqHost == reqOrigin || req.headers.authorization == process.env.API_KEY) {
+  if (req.headers['sec-fetch-site']) {
     if (req.method == "POST") {
       const user = await createUser(req);
       res.status(201).json(user);
@@ -32,7 +32,7 @@ export default async function handler(
       res.status(200).json(users);
     }
   } else{ 
-    return res.status(401).send("You are not authorized to call this API");
+    return res.status(403).json({ error: 'Invalid origin' });
    }
 
 }

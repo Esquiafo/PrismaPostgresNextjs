@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 const API_KEY = process.env.API_KEY
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  
+  console.log(req.headers['sec-fetch-site'])
   if (!req.headers['sec-fetch-site']) {
     return res.status(403).json({ error: 'Invalid origin' });
   }
