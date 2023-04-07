@@ -6,5 +6,5 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   // Handle the API request here
-  res.status(200).json( req.headers );
+  res.status(200).json( req.headers['sec-fetch-site'] );
 }
